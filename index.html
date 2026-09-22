@@ -265,7 +265,7 @@
             message += `💳 *Pagamento:* ${payment}\n\n🛒 *Itens:*\n${itemsText}\n`;
             if (isDelivery) { message += `Subtotal: R$ ${total.toFixed(2).replace('.', ',')}\nTaxa: R$ ${DELIVERY_FEE.toFixed(2).replace('.', ',')}\n`; }
             message += `💰 *Total Geral: R$ ${finalTotal.toFixed(2).replace('.', ',')}*`;
-            window.open(`https://whatsapp.com{WHATSAPP_NUMBER}&text=${encodeURIComponent(message)}`, '_blank');
+            window.open(`https://wa.me{WHATSAPP_NUMBER}&text=${encodeURIComponent(message)}`, '_blank');
         }
     </script>
 </body>
