@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Burger Kings - Cardápio Digital</title>
+    <title>Cardápio Digital</title>
     <style>
         :root {
             --primary: #FF3838;
@@ -17,6 +17,13 @@
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background-color: var(--background); color: var(--text); padding-bottom: 90px; }
+        .modal-header {
+             display: flex;
+             justify-content: flex-end;
+             width: 60px;
+             font: sans-serif;
+             padding-left: 40px;
+        }
         header { background: linear-gradient(135deg, #1e1e24 0%, #0a0a0c 100%); color: white; padding: 30px 20px; text-align: center; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
         header h1 { font-size: 1.8rem; color: var(--secondary); margin-bottom: 5px; }
         header p { font-size: 0.9rem; opacity: 0.8; }
@@ -59,62 +66,177 @@
         .modal-actions { display: flex; gap: 10px; margin-top: 20px; }
         .btn-cancel { flex: 1; background: #F1F2F6; color: var(--text); border: none; padding: 14px; border-radius: 8px; font-weight: bold; cursor: pointer; }
         .btn-submit { flex: 2; background: #25D366; color: white; border: none; padding: 14px; border-radius: 8px; font-weight: bold; font-size: 1rem; cursor: pointer; box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3); }
+        .category-filters-container {
+            position: sticky;
+            top: 12px; /* Deixa uma pequena folga do topo para não parecer colado */
+            left: 16px;
+            right: 16px;
+            margin: 0 1px; /* Afasta das bordas laterais da tela */
+            
+            /* Efeito Glassmorphism moderno */
+            background: #0a0a0c; 
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            
+            /* Bordas e Sombras fluidas */
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 12px;
+            padding: 2px 10px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
+            
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+        }
+        /* Esconde a barra de rolagem dos filtros no Chrome, Safari e Opera */
+        .category-filters-container::-webkit-scrollbar {
+            display: none;
+        }   
+        .btn-filter {
+            background-color: #f3f4f6;
+            color: #1f2937;
+            border: 1px solid #e5e7eb;
+            border-radius: 20px;
+            padding: 8px 18px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+
+        /* Efeito de hover/clique no botão */
+        .btn-filter:hover, .btn-filter:active {
+            background-color: #e02424; /* Cor vermelha estilo delivery, mude se preferir */
+            color: #ffffff;
+            border-color: #e02424;
+        }
+
+        /* Ajuste para o título da categoria não sumir atrás do menu fixo ao rolar */
+        .category-title {
+            scroll-margin-top: 100px; /* Altura aproximada do menu de filtros */
+        }
     </style>
 </head>
 <body>
     <header>
-        <h1>Burger Click</h1>
-        <p>🍔 Hambúrgueres Artesanais sob medida!</p>
+        <h1>🍔Dr. Burger</h1>
+        <p>O melhor Hambúrguer Artesanal!</p>
     </header>
     <div class="container">
-        <div class="category-title">Hambúrgueres</div>
-        <div class="product-card">
-            <div class="product-info">
-                <div class="product-name">Smash Burger Clássico</div>
-                <div class="product-desc">Pão brioche, carne de 90g, queijo cheddar derretido e maionese da casa.</div>
-                <div class="product-price">R$ 22,00</div>
+        <!-- Filtros por Categoria -->
+        
+        <div class="category-filters-container" >
+            <div >
+                <button class="category-title"" onclick="scrollToCategory('hamburgueres')" style="padding: 4px 4px; cursor: pointer;">Hambúrgueres</button>
             </div>
-            <div class="quantity-controls">
-                <button class="btn-qty" onclick="changeQuantity('Smash Burger Clássico', 22.00, -1)">-</button>
-                <div class="qty-number" id="main-qty-Smash-Burger-Clássico">0</div>
-                <button class="btn-qty plus" onclick="changeQuantity('Smash Burger Clássico', 22.00, 1)">+</button>
+            <div >
+                <button class="category-title"" onclick="scrollToCategory('acompanhamentos')" style="padding: 4px 4px; cursor: pointer;">Acompanhamentos</button>
             </div>
-        </div>
-        <div class="product-card">
-            <div class="product-info">
-                <div class="product-name">Duplo Bacon Cheddar</div>
-                <div class="product-desc">Dois blends de 120g, muito bacon crocante, triplo cheddar e barbecue.</div>
-                <div class="product-price">R$ 34,90</div>
-            </div>
-            <div class="quantity-controls">
-                <button class="btn-qty" onclick="changeQuantity('Duplo Bacon Cheddar', 34.90, -1)">-</button>
-                <div class="qty-number" id="main-qty-Duplo-Bacon-Cheddar">0</div>
-                <button class="btn-qty plus" onclick="changeQuantity('Duplo Bacon Cheddar', 34.90, 1)">+</button>
+            <div >
+                <button class="category-title"" onclick="scrollToCategory('bebidas')" style="padding: 4px 4px; cursor: pointer;">Bebidas</button>
             </div>
         </div>
+
+
+        <!-- Categoria: Hambúrgueres -->
+        <div class="category-title" id="hamburgueres">Hambúrgueres</div>
+        
         <div class="product-card">
             <div class="product-info">
-                <div class="product-name">Monster Chicken</div>
-                <div class="product-desc">Frango empanado super crocante, alface, tomate e molho agridoce.</div>
-                <div class="product-price">R$ 26,00</div>
+            <div class="product-name">Smash Burger Clássico</div>
+            <div class="product-desc">Pão brioche, carne de 90g, queijo cheddar derretido e maionese da casa.</div>
+            <div class="product-price">R$ 22,00</div>
             </div>
             <div class="quantity-controls">
-                <button class="btn-qty" onclick="changeQuantity('Monster Chicken', 26.00, -1)">-</button>
-                <div class="qty-number" id="main-qty-Monster-Chicken">0</div>
-                <button class="btn-qty plus" onclick="changeQuantity('Monster Chicken', 26.00, 1)">+</button>
+            <button class="btn-qty" onclick="changeQuantity('Smash Burger Clássico', 22.00, -1)">-</button>
+            <div class="qty-number" id="main-qty-Smash-Burger-Clássico">0</div>
+            <button class="btn-qty plus" onclick="changeQuantity('Smash Burger Clássico', 22.00, 1)">+</button>
             </div>
         </div>
-        <div class="category-title">Acompanhamentos</div>
+
         <div class="product-card">
             <div class="product-info">
-                <div class="product-name">Batata Frita Palito</div>
-                <div class="product-desc">Batatas fritas crocantes e sequinhas acompanhadas de molho buster.</div>
-                <div class="product-price">R$ 12,00</div>
+            <div class="product-name">Duplo Bacon Cheddar</div>
+            <div class="product-desc">Dois blends de 120g, muito bacon crocante, triplo cheddar e barbecue.</div>
+            <div class="product-price">R$ 34,90</div>
             </div>
             <div class="quantity-controls">
-                <button class="btn-qty" onclick="changeQuantity('Batata Frita Palito', 12.00, -1)">-</button>
-                <div class="qty-number" id="main-qty-Batata-Frita-Palito">0</div>
-                <button class="btn-qty plus" onclick="changeQuantity('Batata Frita Palito', 12.00, 1)">+</button>
+            <button class="btn-qty" onclick="changeQuantity('Duplo Bacon Cheddar', 34.90, -1)">-</button>
+            <div class="qty-number" id="main-qty-Duplo-Bacon-Cheddar">0</div>
+            <button class="btn-qty plus" onclick="changeQuantity('Duplo Bacon Cheddar', 34.90, 1)">+</button>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <div class="product-info">
+            <div class="product-name">Monster Chicken</div>
+            <div class="product-desc">Frango empanado super crocante, alface, tomate e molho agridoce.</div>
+            <div class="product-price">R$ 26,00</div>
+            </div>
+            <div class="quantity-controls">
+            <button class="btn-qty" onclick="changeQuantity('Monster Chicken', 26.00, -1)">-</button>
+            <div class="qty-number" id="main-qty-Monster-Chicken">0</div>
+            <button class="btn-qty plus" onclick="changeQuantity('Monster Chicken', 26.00, 1)">+</button>
+            </div>
+        </div>
+
+        <!-- Categoria: Acompanhamentos -->
+        <div class="category-title" id="acompanhamentos">Acompanhamentos</div>
+        
+        <div class="product-card">
+            <div class="product-info">
+            <div class="product-name">Batata Frita Palito</div>
+            <div class="product-desc">Batatas fritas crocantes e sequinhas acompanhadas de molho buster.</div>
+            <div class="product-price">R$ 12,00</div>
+            </div>
+            <div class="quantity-controls">
+            <button class="btn-qty" onclick="changeQuantity('Batata Frita Palito', 12.00, -1)">-</button>
+            <div class="qty-number" id="main-qty-Batata-Frita-Palito">0</div>
+            <button class="btn-qty plus" onclick="changeQuantity('Batata Frita Palito', 12.00, 1)">+</button>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <div class="product-info">
+            <div class="product-name">Batata Frita Palito e bacon</div>
+            <div class="product-desc">Batatas fritas crocantes e sequinhas acompanhadas de molho buster.</div>
+            <div class="product-price">R$ 14,00</div>
+            </div>
+            <div class="quantity-controls">
+            <button class="btn-qty" onclick="changeQuantity('Batata Frita Palito e bacon', 14.00, -1)">-</button>
+            <div class="qty-number" id="main-qty-Batata-Frita-Palito-e-bacon">0</div>
+            <button class="btn-qty plus" onclick="changeQuantity('Batata Frita Palito e bacon', 14.00, 1)">+</button>
+            </div>
+        </div>
+
+        <!-- Categoria: Bebidas-->
+        <div class="category-title" id="bebidas">Bebidas</div>
+        
+        <div class="product-card">
+            <div class="product-info">
+            <div class="product-name">Coca cola lata</div>
+            <div class="product-desc">300ml</div>
+            <div class="product-price">R$ 8,00</div>
+            </div>
+            <div class="quantity-controls">
+            <button class="btn-qty" onclick="changeQuantity('Coca cola lata', 8.00, -1)">-</button>
+            <div class="qty-number" id="main-qty-Coca-cola-lata">0</div>
+            <button class="btn-qty plus" onclick="changeQuantity('Coca cola lata', 8.00, 1)">+</button>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <div class="product-info">
+            <div class="product-name">Guaraná Antartica lata</div>
+            <div class="product-desc">300ml</div>
+            <div class="product-price">R$ 8,00</div>
+            </div>
+            <div class="quantity-controls">
+            <button class="btn-qty" onclick="changeQuantity('Guaraná Antartica lata', 8.00, -1)">-</button>
+            <div class="qty-number" id="main-qty-Guaraná-Antartica-lata">0</div>
+            <button class="btn-qty plus" onclick="changeQuantity('Guaraná Antartica lata', 8.00, 1)">+</button>
             </div>
         </div>
     </div>
@@ -127,6 +249,11 @@
     </div>
     <div class="modal" id="review-modal">
         <div class="modal-content">
+            
+            <div class="modal-header">
+                <button type="button" class="btn-cancel" onclick="closeReviewModal()"><<<</button>
+            </div>
+            </br>
             <h2>Resumo do Pedido</h2>
             <h3>Seus itens selecionados:</h3>
             <div class="review-cart-list" id="review-cart-items"></div>
@@ -137,8 +264,19 @@
             </div>
             <h3>Informações para Finalizar:</h3>
             <form id="order-form" onsubmit="sendOrder(event)">
-                <div class="form-group"><label for="name">Seu Nome *</label><input type="text" id="name" required placeholder="Ex: João Silva"></div>
-                <div class="form-group"><label for="phone">Número de Telefone / WhatsApp *</label><input type="tel" id="phone" required placeholder="Ex: (33) 99999-9999"></div>
+                
+                <div class="form-group">
+                    <label for="name">Seu Nome *</label>
+                    <!-- max 100 caracteres e apenas letras/espaços (incluindo acentos) -->
+                    <input type="text" id="name" required maxlength="50" pattern="[A-Za-zÀ-ÿ\s]+" title="O nome deve conter apenas letras e ter no máximo 100 caracteres." placeholder="Ex: João Silva">
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">Número de Telefone / WhatsApp *</label>
+                    <!-- max 14 caracteres e apenas números inteiros -->
+                    <input type="tel" id="phone" required maxlength="14" pattern="[0-9]+" title="O telefone deve conter apenas números (sem espaços ou traços) e ter no máximo 14 dígitos." placeholder="Ex: 33999999999">
+                </div>
+                
                 <div class="form-group">
                     <label>Como deseja receber? *</label>
                     <div class="radio-group">
@@ -146,7 +284,13 @@
                         <label class="radio-option"><input type="radio" name="delivery-method" value="pickup" onchange="toggleAddressVisibility(false)"> Retirada na Loja</label>
                     </div>
                 </div>
-                <div class="form-group" id="address-section"><label for="address">Endereço Completo de Entrega *</label><input type="text" id="address" required placeholder="Rua, número, bairro, apto"></div>
+                
+                <div class="form-group" id="address-section">
+                    <label for="address">Endereço Completo de Entrega *</label>
+                    <!-- max 100 caracteres -->
+                    <input type="text" id="address" required maxlength="60" placeholder="Rua, número, bairro, apto">
+                </div>
+                
                 <div class="form-group">
                     <label for="payment">Forma de Pagamento *</label>
                     <select id="payment" required>
@@ -157,8 +301,15 @@
                         <option value="Dinheiro">Dinheiro</option>
                     </select>
                 </div>
+
+                <div class="form-group">
+                    <label for="Observacao">Observações</label>
+                    <!-- max 100 caracteres e apenas letras/espaços (incluindo acentos) -->
+                    <input type="text" id="Observacao" maxlength="80" title="Observações do pedido" placeholder="Ex: Chamar na portaria">
+                </div>
+                
                 <div class="modal-actions">
-                    <button type="button" class="btn-cancel" onclick="closeReviewModal()">Adicionar Mais</button>
+                    <button type="button" class="btn-cancel" onclick="closeReviewModal()">Voltar</button>
                     <button type="submit" class="btn-submit">Enviar via WhatsApp</button>
                 </div>
             </form>
@@ -170,6 +321,12 @@
         let cart = [];
         let total = 0;
 
+        function scrollToCategory(id) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
         function changeQuantity(name, price, change) {
             const existingItem = cart.find(item => item.name === name);
             if (existingItem) {
@@ -250,23 +407,48 @@
 
         function sendOrder(event) {
             event.preventDefault();
+            if (name.trim() === "") {
+                alert("Por favor, preencha o seu nome antes de enviar o pedido.");
+                document.getElementById('name').focus(); 
+                return; 
+            }
+            if (phone.trim() === "") {
+                alert("Por favor, preencha o seu telefone antes de enviar o pedido.");
+                document.getElementById('phone').focus(); 
+                return; 
+            }
+            if (address.trim() === "") {
+                alert("Por favor, preencha o seu endereço antes de enviar o pedido.");
+                document.getElementById('address').focus(); 
+                return; 
+            }
+            if (payment == undefined || payment.trim() === "") {
+                alert("Por favor, preencha o seu modo de pagamento antes de enviar o pedido.");
+                document.getElementById('payment').focus(); 
+                return; 
+            }
             if (cart.length === 0) { alert("Adicione itens antes!"); return; }
             const name = document.getElementById('name').value;
             const phone = document.getElementById('phone').value;
             const method = document.querySelector('input[name="delivery-method"]:checked').value;
             const address = document.getElementById('address').value;
             const payment = document.getElementById('payment').value;
+            const observacao = document.getElementById('Observacao').value;
             let itemsText = "";
             cart.forEach(item => { itemsText += `• *${item.quantity}x* ${item.name} (R$ ${(item.price * item.quantity).toFixed(2).replace('.', ',')})\n`; });
             const isDelivery = method === "delivery";
             const finalTotal = isDelivery ? (total + DELIVERY_FEE) : total;
             let message = `🍔 *NOVO PEDIDO CONFIRMADO* 🍔\n\n👤 *Cliente:* ${name}\n📞 *Contato:* ${phone}\n📌 *Modalidade:* ${isDelivery ? "🛵 Delivery" : "🛍️ Retirada"}\n`;
             if (isDelivery) { message += `📍 *Endereço:* ${address}\n`; }
-            message += `💳 *Pagamento:* ${payment}\n\n🛒 *Itens:*\n${itemsText}\n`;
+            message += `💳 *Pagamento:* ${payment}\n\n🛒 *Itens:*\n${itemsText}\n *Observação:*\n${observacao}\n`;
             if (isDelivery) { message += `Subtotal: R$ ${total.toFixed(2).replace('.', ',')}\nTaxa: R$ ${DELIVERY_FEE.toFixed(2).replace('.', ',')}\n`; }
             message += `💰 *Total Geral: R$ ${finalTotal.toFixed(2).replace('.', ',')}*`;
             window.open(`https://api.whatsapp.com/send?phone=5533998245836&amp;&text=${encodeURIComponent(message)}`, '_blank');
         }
+
+        document.getElementById('phone').addEventListener('input', function (e) {
+			e.target.value = e.target.value.replace(/\D/g, '');
+		});
     </script>
 </body>
 </html>
