@@ -29,6 +29,7 @@
         header p { font-size: 0.9rem; opacity: 0.8; }
         .container { padding: 15px; max-width: 500px; margin: 0 auto; }
         .category-title { font-size: 1.2rem; margin: 20px 0 10px 0; padding-left: 5px; border-left: 4px solid var(--primary); font-weight: 700; }
+        .category-title-filter { color: black; font-size: 1.0rem; padding-left: 5px; border: 1px solid var(--primary); font-weight: 700; }
         .product-card { background: var(--surface); border-radius: 12px; padding: 14px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
         .product-info { flex: 1; padding-right: 10px; }
         .product-name { font-weight: bold; font-size: 1rem; margin-bottom: 4px; }
@@ -129,13 +130,13 @@
         
         <div class="category-filters-container" >
             <div >
-                <button class="category-title"" onclick="scrollToCategory('hamburgueres')" style="padding: 4px 4px; cursor: pointer;">Hambúrgueres</button>
+                <button class="category-title-filter" onclick="scrollToCategory('hamburgueres')" style="padding: 4px 4px; cursor: pointer;">Hambúrgueres</button>
             </div>
             <div >
-                <button class="category-title"" onclick="scrollToCategory('acompanhamentos')" style="padding: 4px 4px; cursor: pointer;">Acompanhamentos</button>
+                <button class="category-title-filter" onclick="scrollToCategory('acompanhamentos')" style="padding: 4px 4px; cursor: pointer;">Acompanhamentos</button>
             </div>
             <div >
-                <button class="category-title"" onclick="scrollToCategory('bebidas')" style="padding: 4px 4px; cursor: pointer;">Bebidas</button>
+                <button class="category-title-filter" onclick="scrollToCategory('bebidas')" style="padding: 4px 4px; cursor: pointer;">Bebidas</button>
             </div>
         </div>
 
