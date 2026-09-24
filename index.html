@@ -138,6 +138,52 @@
 			align-items: center;
 			gap: 6px;
 		}
+		.footer-credits {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 8px;
+			margin: 40px auto 20px auto;
+			padding: 12px 24px;
+			width: fit-content;
+			background: rgba(255, 255, 255, 0.05);
+			border: 1px solid rgba(0, 0, 0, 0.08);
+			border-radius: 30px;
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			font-size: 13px;
+			color: #666;
+			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+			transition: all 0.3s ease;
+			cursor: default;
+		}
+		
+		/* Efeito ao passar o mouse */
+		.footer-credits:hover {
+			transform: translateY(-2px);
+			box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+			background: #fff;
+			border-color: #ffc107; /* Cor de destaque (mude para combinar com seu layout) */
+			color: #222;
+		}
+		
+		/* Ícone de código (Developers) */
+		.footer-icon {
+			width: 16px;
+			height: 16px;
+			color: #ffc107; /* Cor do ícone de chaves de código */
+			transition: transform 0.3s ease;
+		}
+		
+		.footer-credits:hover .footer-icon {
+			transform: scale(1.15);
+		}
+		
+		/* Estilo do nome da marca */
+		.brand-name {
+			color: #222;
+			font-weight: 700;
+			letter-spacing: 0.5px;
+		}
     </style>
 </head>
 <body>
@@ -307,6 +353,14 @@
             </div>
         </div>
     </div>
+	<!-- Rodapé de Créditos -->
+	<div class="footer-credits">
+		<svg class="footer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+			<polyline points="16 18 22 12 16 6"></polyline>
+			<polyline points="8 6 2 12 8 18"></polyline>
+		</svg>
+		<span>powered by <strong class="brand-name">&lt;COMPREAQUIDEVS&gt;</strong></span>
+	</div>
     <div class="cart-bar">
         <div class="cart-info">
             <h4 id="cart-count">Nenhum item selecionado</h4>
@@ -546,68 +600,68 @@
             // Opcional: Se você já tiver outras funções no window.onload, adicione a chamada dentro delas.
         };
 
-        let carrinho = {};
+        <!-- let carrinho = {}; -->
 
-        function updateAddon(productName) {
-            const formattedName = productName.replace(/\s+/g, '-');
-            const checkboxes = document.querySelectorAll(`input[name="addon-${formattedName}"]:checked`);
+        <!-- function updateAddon(productName) { -->
+            <!-- const formattedName = productName.replace(/\s+/g, '-'); -->
+            <!-- const checkboxes = document.querySelectorAll(`input[name="addon-${formattedName}"]:checked`); -->
             
-            let adicionaisSelecionados = [];
-            let precoAdicionais = 0;
+            <!-- let adicionaisSelecionados = []; -->
+            <!-- let precoAdicionais = 0; -->
 
-            checkboxes.forEach(checkbox => {
-                precoAdicionais += parseFloat(checkbox.getAttribute('data-price'));
-                adicionaisSelecionados.push(checkbox.value);
-            });
+            <!-- checkboxes.forEach(checkbox => { -->
+                <!-- precoAdicionais += parseFloat(checkbox.getAttribute('data-price')); -->
+                <!-- adicionaisSelecionados.push(checkbox.value); -->
+            <!-- }); -->
 
-            if (carrinho[productName]) {
-                carrinho[productName].adicionais = adicionaisSelecionados;
-                carrinho[productName].precoAdicionais = precoAdicionais;
-                atualizarInterfaceCarrinho(); 
-            }
-        }
+            <!-- if (carrinho[productName]) { -->
+                <!-- carrinho[productName].adicionais = adicionaisSelecionados; -->
+                <!-- carrinho[productName].precoAdicionais = precoAdicionais; -->
+                <!-- atualizarInterfaceCarrinho();  -->
+            <!-- } -->
+        <!-- } -->
 
-        function changeQuantity(productName, basePrice, change) {
-            const formattedName = productName.replace(/\s+/g, '-');
-            const qtyElement = document.getElementById(`main-qty-${formattedName}`);
-            let currentQty = parseInt(qtyElement.innerText) || 0;
+        <!-- function changeQuantity(productName, basePrice, change) { -->
+            <!-- const formattedName = productName.replace(/\s+/g, '-'); -->
+            <!-- const qtyElement = document.getElementById(`main-qty-${formattedName}`); -->
+            <!-- let currentQty = parseInt(qtyElement.innerText) || 0; -->
             
-            currentQty += change;
-            if (currentQty < 0) currentQty = 0;
+            <!-- currentQty += change; -->
+            <!-- if (currentQty < 0) currentQty = 0; -->
             
-            qtyElement.innerText = currentQty;
+            <!-- qtyElement.innerText = currentQty; -->
 
-            if (currentQty > 0) {
-                if (!carrinho[productName]) {
-                    carrinho[productName] = {
-                        quantidade: 0,
-                        precoBase: basePrice,
-                        precoAdicionais: 0,
-                        adicionais: []
-                    };
-                }
-                carrinho[productName].quantidade = currentQty;
-                updateAddon(productName);
-            } else {
-                delete carrinho[productName];
-            }
+            <!-- if (currentQty > 0) { -->
+                <!-- if (!carrinho[productName]) { -->
+                    <!-- carrinho[productName] = { -->
+                        <!-- quantidade: 0, -->
+                        <!-- precoBase: basePrice, -->
+                        <!-- precoAdicionais: 0, -->
+                        <!-- adicionais: [] -->
+                    <!-- }; -->
+                <!-- } -->
+                <!-- carrinho[productName].quantidade = currentQty; -->
+                <!-- updateAddon(productName); -->
+            <!-- } else { -->
+                <!-- delete carrinho[productName]; -->
+            <!-- } -->
 
-            atualizarInterfaceCarrinho();
-        }
+            <!-- atualizarInterfaceCarrinho(); -->
+        <!-- } -->
 
-        function atualizarInterfaceCarrinho() {
-            let totalCarrinho = 0;
+        <!-- function atualizarInterfaceCarrinho() { -->
+            <!-- let totalCarrinho = 0; -->
 
-            console.log("--- CARRINHO ATUAL ---");
-            for (const [nome, item] of Object.entries(carrinho)) {
-                const precoUnitarioTotal = item.precoBase + item.precoAdicionais;
-                const subtotalItem = precoUnitarioTotal * item.quantidade;
-                totalCarrinho += subtotalItem;
+            <!-- console.log("--- CARRINHO ATUAL ---"); -->
+            <!-- for (const [nome, item] of Object.entries(carrinho)) { -->
+                <!-- const precoUnitarioTotal = item.precoBase + item.precoAdicionais; -->
+                <!-- const subtotalItem = precoUnitarioTotal * item.quantidade; -->
+                <!-- totalCarrinho += subtotalItem; -->
 
-                console.log(`${item.quantidade}x ${nome} (Adicionais: ${item.adicionais.join(', ') || 'Nenhum'}) - Subtotal: R$ ${subtotalItem.toFixed(2)}`);
-            }
-            console.log(`TOTAL GERAL: R$ ${totalCarrinho.toFixed(2)}`);
-        }
+                <!-- console.log(`${item.quantidade}x ${nome} (Adicionais: ${item.adicionais.join(', ') || 'Nenhum'}) - Subtotal: R$ ${subtotalItem.toFixed(2)}`); -->
+            <!-- } -->
+            <!-- console.log(`TOTAL GERAL: R$ ${totalCarrinho.toFixed(2)}`); -->
+        <!-- } -->
     </script>
 </body>
 </html>
