@@ -184,6 +184,130 @@
 			font-weight: 700;
 			letter-spacing: 0.5px;
 		}
+		
+		.whatsapp-alert {
+			background-color: #f8f9fa; /* Fundo cinza bem claro e limpo */
+			border-left: 4px solid #25d366; /* Borda lateral com a cor verde do WhatsApp */
+			padding: 10px 16px;
+			margin: 15px auto;
+			max-width: 600px;
+			border-radius: 4px;
+			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+		}
+
+		.alert-content {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+		}
+
+		.alert-icon {
+			width: 16px;
+			height: 16px;
+			color: #25d366; /* Ícone verde */
+			flex-shrink: 0;
+		}
+
+		.alert-text {
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			font-size: 12px; /* Letra pequena */
+			font-style: italic; /* Texto em itálico */
+			color: #555;
+			margin: 0;
+			line-height: 1.4;
+		}
+
+		.alert-text .highlight {
+			font-weight: 700;
+			font-style: normal; /* Mantém o "Atenção" reto para dar destaque */
+			color: #333;
+		}		
+
+		/* Tamanho e cor dos ícones */
+		.info-icon {
+			width: 14px;
+			height: 14px;
+			color: #555;
+			flex-shrink: 0;
+			padding-top: 5px;
+		}
+
+		/* Texto pequeno conforme solicitado */
+		.info-text {
+			line-height: 1;
+			font-size: 11px;
+			color: #666;
+		}
+
+		/* Cor de destaque opcional para o valor da taxa */
+		.delivery-price {
+			color: #2e7d32; /* Tom verde discreto para finanças/valores */
+		}
+		
+		.product-card {
+			display: flex;
+			align-items: center;
+			gap: 16px;
+			padding: 16px;
+			background: #fff;
+			border-radius: 12px;
+			margin-bottom: 16px;
+			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+			border: 1px solid #f0f0f0;
+		}
+
+		/* Área reservada para a imagem */
+		.product-image-container {
+			width: 75px;
+			height: 75px;
+			background-color: #fafafa;
+			border-radius: 8px;
+			flex-shrink: 0;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			overflow: hidden;
+			border: 1px solid #f5f5f5;
+		}
+
+		.product-svg-img {
+			width: 100%;
+			height: 100%;
+			object-fit: contain;
+		}
+
+		/* O bloco de informações ocupa todo o espaço restante */
+		.product-info {
+			flex-grow: 1;
+		}
+
+		.product-name {
+			font-weight: bold;
+			font-size: 16px;
+			color: #333;
+			margin-bottom: 4px;
+		}
+
+		.product-desc {
+			font-size: 13px;
+			color: #666;
+			margin-bottom: 8px;
+			line-height: 1.4;
+		}
+
+		.product-price {
+			font-weight: bold;
+			color: #2e7d32;
+			font-size: 15px;
+		}
+
+		/* Controles de Quantidade permanecem firmes na direita */
+		.quantity-controls {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+			flex-shrink: 0;
+		}
     </style>
 </head>
 <body>
@@ -196,6 +320,21 @@
             <div style="font-size: 11px; color: #666; margin-top: 2px;">
                 <span>📍 Av. Principal, 1234 - Centro</span>
             </div>
+			<div>
+			<svg class="info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+					<circle cx="12" cy="12" r="10"></circle>
+					<polyline points="12 6 12 12 16 14"></polyline>
+			</svg>
+			<span class="info-text">Entrega: <strong>20 min - 60 min</strong></span>
+			</div>
+			<div>
+			<svg class="info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+					<rect x="1" y="3" width="22" height="14" rx="2" ry="2"></rect>
+					<line x1="1" y1="10" x2="23" y2="10"></line>
+			</svg>
+			<span class="info-text">Taxa: <strong class="delivery-price">A partir de R$ 7,00</strong></span>
+			</div>
+			
         </div>
     </header>
     <div class="container">
@@ -215,104 +354,162 @@
 
 
         <!-- Categoria: Hambúrgueres -->
-        <div class="category-title" id="hamburgueres">Hambúrgueres</div>
+		<div class="category-title" id="hamburgueres">Hambúrgueres</div>
 
+		<div class="product-card">
+			<!-- Imagem Ilustrativa (SVG) -->
+			<div class="product-image-container">
+				<svg class="product-svg-img" viewBox="0 0 100 100" fill="none">
+					<!-- Pão Superior -->
+					<path d="M15 50C15 25 35 15 50 15C65 15 85 25 85 50H15Z" fill="#E29543"/>
+					<!-- Sementes de Gergelim -->
+					<circle cx="35" cy="28" r="1.5" fill="#FFF" opacity="0.8"/>
+					<circle cx="50" cy="24" r="1.5" fill="#FFF" opacity="0.8"/>
+					<circle cx="65" cy="30" r="1.5" fill="#FFF" opacity="0.8"/>
+					<circle cx="42" cy="36" r="1.5" fill="#FFF" opacity="0.8"/>
+					<circle cx="58" cy="34" r="1.5" fill="#FFF" opacity="0.8"/>
+					<!-- Queijo Derretido -->
+					<path d="M12 56L18 64L30 56L45 66L60 56L75 64L88 56V50H12V56Z" fill="#F4B41A"/>
+					<!-- Hambúrguer Grelhado -->
+					<rect x="10" y="55" width="80" height="12" rx="6" fill="#593122"/>
+					<!-- Alface -->
+					<path d="M10 48C13 46 17 52 20 48C23 44 27 52 30 48C33 44 37 52 40 48C43 44 47 52 50 48C53 44 57 52 60 48C63 44 67 52 70 48C73 44 77 52 80 48C83 44 87 52 90 48V52H10V48Z" fill="#6FB936"/>
+					<!-- Pão Inferior -->
+					<path d="M15 66C15 72 25 78 50 78C75 78 85 72 85 66H15Z" fill="#D28432"/>
+				</svg>
+			</div>
+			
+			<div class="product-info">
+				<div class="product-name">Smash Burger Clássico</div>
+				<div class="product-desc">Pão brioche, carne de 90g, queijo cheddar derretido e maionese da casa.</div>
+				<div class="product-price">R$ 22,00</div>
+			</div>
+			<div class="quantity-controls">
+				<button class="btn-qty" onclick="changeQuantity('Smash Burger Clássico', 22.00, -1)">-</button>
+				<div class="qty-number" id="main-qty-Smash-Burger-Clássico">0</div>
+				<button class="btn-qty plus" onclick="changeQuantity('Smash Burger Clássico', 22.00, 1)">+</button>
+			</div>
+		</div>
+
+		<div class="product-card">
+			<!-- Imagem Ilustrativa (SVG) -->
+			<div class="product-image-container">
+				<svg class="product-svg-img" viewBox="0 0 100 100" fill="none">
+					<!-- Pão Superior -->
+					<path d="M15 45C15 22 35 12 50 12C65 12 85 22 85 45H15Z" fill="#CD7F32"/>
+					<!-- Bacon Superior -->
+					<path d="M12 44Q30 38 50 44Q70 50 88 44" stroke="#8B0000" stroke-width="4" stroke-linecap="round"/>
+					<path d="M12 44Q30 38 50 44Q70 50 88 44" stroke="#FFB6C1" stroke-width="1.5" stroke-dasharray="4 2"/>
+					<!-- Queijo 1 -->
+					<path d="M12 49L25 56L50 47L75 56L88 49V44H12V49Z" fill="#F4B41A"/>
+					<!-- Carne 1 -->
+					<rect x="10" y="47" width="80" height="10" rx="5" fill="#4A2317"/>
+					<!-- Queijo 2 -->
+					<path d="M12 59L35 66L60 57L88 59V55H12V59Z" fill="#F4B41A"/>
+					<!-- Carne 2 -->
+					<rect x="10" y="57" width="80" height="10" rx="5" fill="#4A2317"/>
+					<!-- Pão Inferior -->
+					<path d="M15 66C15 74 25 80 50 80C75 80 85 74 85 66H15Z" fill="#CD7F32"/>
+				</svg>
+			</div>
+
+			<div class="product-info">
+				<div class="product-name">Duplo Bacon Cheddar</div>
+				<div class="product-desc">Dois blends de 120g, muito bacon crocante, triplo cheddar e barbecue.</div>
+				<div class="product-price">R$ 34,90</div>
+			</div>
+			<div class="quantity-controls">
+				<button class="btn-qty" onclick="changeQuantity('Duplo Bacon Cheddar', 34.90, -1)">-</button>
+				<div class="qty-number" id="main-qty-Duplo-Bacon-Cheddar">0</div>
+				<button class="btn-qty plus" onclick="changeQuantity('Duplo Bacon Cheddar', 34.90, 1)">+</button>
+			</div>
+		</div>
+
+		<div class="product-card">
+			<!-- Imagem Ilustrativa (SVG) -->
+			<div class="product-image-container">
+				<svg class="product-svg-img" viewBox="0 0 100 100" fill="none">
+					<!-- Pão Superior -->
+					<path d="M15 50C15 25 35 15 50 15C65 15 85 25 85 50H15Z" fill="#E29543"/>
+					<!-- Alface Transbordando -->
+					<path d="M8 46Q25 54 50 46Q75 38 92 46" stroke="#4CAF50" stroke-width="4" stroke-linecap="round"/>
+					<!-- Tomate -->
+					<rect x="18" y="49" width="30" height="6" rx="3" fill="#E53935"/>
+					<rect x="52" y="49" width="30" height="6" rx="3" fill="#E53935"/>
+					<!-- Frango Empanado Crocante -->
+					<path d="M12 54C15 52 20 58 35 54C50 50 65 58 75 54C85 50 86 54 88 56C88 62 75 66 50 66C25 66 12 62 12 56Z" fill="#D2691E" stroke="#B8860B" stroke-dasharray="2 1"/>
+					<!-- Pão Inferior -->
+					<path d="M15 65C15 71 25 77 50 77C75 77 85 71 85 65H15Z" fill="#D28432"/>
+				</svg>
+			</div>
+
+			<div class="product-info">
+				<div class="product-name">Monster Chicken</div>
+				<div class="product-desc">Frango empanado super crocante, alface, tomate e molho agridoce.</div>
+				<div class="product-price">R$ 26,00</div>
+			</div>
+			<div class="quantity-controls">
+				<button class="btn-qty" onclick="changeQuantity('Monster Chicken', 26.00, -1)">-</button>
+				<div class="qty-number" id="main-qty-Monster-Chicken">0</div>
+				<button class="btn-qty plus" onclick="changeQuantity('Monster Chicken', 26.00, 1)">+</button>
+			</div>
+		</div>
+
+		<!-- Categoria: Acompanhamentos -->
+		<div class="category-title" id="acompanhamentos">Acompanhamentos</div>
+
+		<div class="product-card">
+			<!-- Imagem Ilustrativa (SVG) -->
+			<div class="product-image-container">
+				<svg class="product-svg-img" viewBox="0 0 100 100" fill="none">
+					<!-- Embalagem de Batata -->
+					<path d="M20 45L25 85C25 88 30 90 50 90C70 90 75 88 75 85L80 45H20Z" fill="#E53935"/>
+					<path d="M30 45C35 55 45 60 50 60C55 60 65 55 70 45H30Z" fill="#C62828"/>
+					<circle cx="50" cy="72" r="8" fill="#F4B41A"/>
+					<!-- Batatas Fritas Individuais -->
+					<rect x="26" y="20" width="7" height="35" rx="1.5" transform="rotate(-15 26 20)" fill="#FFD54F"/>
+					<rect x="36" y="15" width="7" height="40" rx="1.5" transform="rotate(-5 36 15)" fill="#F4B41A"/>
+					<rect x="47" y="12" width="7" height="42" rx="1.5" fill="#FFD54F"/>
+					<rect x="58" y="16" width="7" height="38" rx="1.5" transform="rotate(8 58 16)" fill="#F4B41A"/>
+					<rect x="68" y="22" width="7" height="32" rx="1.5" transform="rotate(20 68 22)" fill="#FFD54F"/>
+					<!-- Batatas na camada de trás -->
+					<rect x="32" y="25" width="6" height="30" rx="1" transform="rotate(-8 32 25)" fill="#FFB300"/>
+					<rect x="43" y="22" width="6" height="32" rx="1" fill="#FFB300"/>
+					<rect x="54" y="24" width="6" height="30" rx="1" transform="rotate(12 54 24)" fill="#FFB300"/>
+				</svg>
+			</div>
+
+			<div class="product-info">
+				<div class="product-name">Batata Frita Palito</div>
+				<div class="product-desc">Batatas fritas crocantes e sequinhas acompanhadas de molho buster.</div>
+				<div class="product-price">R$ 12,00</div>
+			</div>
+			<div class="quantity-controls">
+				<button class="btn-qty" onclick="changeQuantity('Batata Frita Palito', 12.00, -1)">-</button>
+				<div class="qty-number" id="main-qty-Batata-Frita-Palito">0</div>
+				<button class="btn-qty plus" onclick="changeQuantity('Batata Frita Palito', 12.00, 1)">+</button>
+			</div>
+		</div>
         <div class="product-card">
-            <div class="product-info">
-                <div class="product-name">Smash Burger Clássico</div>
-                <div class="product-desc">Pão brioche, carne de 90g, queijo cheddar derretido e maionese da casa.</div>
-                <div class="product-price">R$ 22,00</div>
-                
-                <!-- Opções de Composição para Hambúrguer -->
-                <!-- <div class="product-addons">
-                    <span class="addon-title">Adicionais:</span>
-                    <label class="addon-item">
-                        <input type="checkbox" name="addon-Smash-Burger-Clássico" value="Bacon" data-price="4.00" onchange="updateAddon('Smash Burger Clássico')"> Bacon (+R\$ 4,00)
-                    </label>
-                    <label class="addon-item">
-                        <input type="checkbox" name="addon-Smash-Burger-Clássico" value="Queijo Cheddar" data-price="3.50" onchange="updateAddon('Smash Burger Clássico')"> Queijo Cheddar (+R\$ 3,50)
-                    </label>
-                    <label class="addon-item">
-                        <input type="checkbox" name="addon-Smash-Burger-Clássico" value="Carne Extra 90g" data-price="7.00" onchange="updateAddon('Smash Burger Clássico')"> Carne extra 90g (+R\$ 7,00)
-                    </label>
-                </div>-->
-            </div>
-            <div class="quantity-controls">
-                <button class="btn-qty" onclick="changeQuantity('Smash Burger Clássico', 22.00, -1)">-</button>
-                <div class="qty-number" id="main-qty-Smash-Burger-Clássico">0</div>
-                <button class="btn-qty plus" onclick="changeQuantity('Smash Burger Clássico', 22.00, 1)">+</button>
-            </div>
-        </div>
-
-        <div class="product-card">
-            <div class="product-info">
-                <div class="product-name">Duplo Bacon Cheddar</div>
-                <div class="product-desc">Dois blends de 120g, muito bacon crocante, triplo cheddar e barbecue.</div>
-                <div class="product-price">R\$ 34,90</div>
-                
-                <!-- Opções de Composição para Hambúrguer -->
-                <!--<div class="product-addons">
-                    <span class="addon-title">Adicionais:</span>
-                    <label class="addon-item">
-                        <input type="checkbox" name="addon-Duplo-Bacon-Cheddar" value="Bacon Extra" data-price="4.00" onchange="updateAddon('Duplo Bacon Cheddar')"> Bacon extra (+R\$ 4,00)
-                    </label>
-                    <label class="addon-item">
-                        <input type="checkbox" name="addon-Duplo-Bacon-Cheddar" value="Cheddar Extra" data-price="3.50" onchange="updateAddon('Duplo Bacon Cheddar')"> Cheddar extra (+R\$ 3,50)
-                    </label>
-                    <label class="addon-item">
-                        <input type="checkbox" name="addon-Duplo-Bacon-Cheddar" value="Blend Extra 120g" data-price="9.50" onchange="updateAddon('Duplo Bacon Cheddar')"> Blend extra 120g (+R\$ 9,50)
-                    </label>
-                </div>-->
-            </div>
-            <div class="quantity-controls">
-                <button class="btn-qty" onclick="changeQuantity('Duplo Bacon Cheddar', 34.90, -1)">-</button>
-                <div class="qty-number" id="main-qty-Duplo-Bacon-Cheddar">0</div>
-                <button class="btn-qty plus" onclick="changeQuantity('Duplo Bacon Cheddar', 34.90, 1)">+</button>
-            </div>
-        </div>
-
-        <div class="product-card">
-            <div class="product-info">
-                <div class="product-name">Monster Chicken</div>
-                <div class="product-desc">Frango empanado super crocante, alface, tomate e molho agridoce.</div>
-                <div class="product-price">R\$ 26,00</div>
-                
-                <!-- Opções de Composição para Hambúrguer -->
-                <!--<div class="product-addons">
-                    <span class="addon-title">Adicionais:</span>
-                    <label class="addon-item">
-                        <input type="checkbox" name="addon-Monster-Chicken" value="Bacon" data-price="4.00" onchange="updateAddon('Monster Chicken')"> Bacon (+R\$ 4,00)
-                    </label>
-                    <label class="addon-item">
-                        <input type="checkbox" name="addon-Monster-Chicken" value="Queijo Cheddar" data-price="3.50" onchange="updateAddon('Monster Chicken')"> Queijo Cheddar (+R\$ 3,50)
-                    </label>
-                </div>-->
-            </div>
-            <div class="quantity-controls">
-                <button class="btn-qty" onclick="changeQuantity('Monster Chicken', 26.00, -1)">-</button>
-                <div class="qty-number" id="main-qty-Monster-Chicken">0</div>
-                <button class="btn-qty plus" onclick="changeQuantity('Monster Chicken', 26.00, 1)">+</button>
-            </div>
-        </div>
-
-        <!-- Categoria: Acompanhamentos -->
-        <div class="category-title" id="acompanhamentos">Acompanhamentos</div>
-
-        <div class="product-card">
-            <div class="product-info">
-                <div class="product-name">Batata Frita Palito</div>
-                <div class="product-desc">Batatas fritas crocantes e sequinhas acompanhadas de molho buster.</div>
-                <div class="product-price">R$ 12,00</div>
-            </div>
-            <div class="quantity-controls">
-                <button class="btn-qty" onclick="changeQuantity('Batata Frita Palito', 12.00, -1)">-</button>
-                <div class="qty-number" id="main-qty-Batata-Frita-Palito">0</div>
-                <button class="btn-qty plus" onclick="changeQuantity('Batata Frita Palito', 12.00, 1)">+</button>
-            </div>
-        </div>
-
-        <div class="product-card">
-            <div class="product-info">
+            <div class="product-image-container">
+				<svg class="product-svg-img" viewBox="0 0 100 100" fill="none">
+					<!-- Embalagem de Batata -->
+					<path d="M20 45L25 85C25 88 30 90 50 90C70 90 75 88 75 85L80 45H20Z" fill="#E53935"/>
+					<path d="M30 45C35 55 45 60 50 60C55 60 65 55 70 45H30Z" fill="#C62828"/>
+					<circle cx="50" cy="72" r="8" fill="#F4B41A"/>
+					<!-- Batatas Fritas Individuais -->
+					<rect x="26" y="20" width="7" height="35" rx="1.5" transform="rotate(-15 26 20)" fill="#FFD54F"/>
+					<rect x="36" y="15" width="7" height="40" rx="1.5" transform="rotate(-5 36 15)" fill="#F4B41A"/>
+					<rect x="47" y="12" width="7" height="42" rx="1.5" fill="#FFD54F"/>
+					<rect x="58" y="16" width="7" height="38" rx="1.5" transform="rotate(8 58 16)" fill="#F4B41A"/>
+					<rect x="68" y="22" width="7" height="32" rx="1.5" transform="rotate(20 68 22)" fill="#FFD54F"/>
+					<!-- Batatas na camada de trás -->
+					<rect x="32" y="25" width="6" height="30" rx="1" transform="rotate(-8 32 25)" fill="#FFB300"/>
+					<rect x="43" y="22" width="6" height="32" rx="1" fill="#FFB300"/>
+					<rect x="54" y="24" width="6" height="30" rx="1" transform="rotate(12 54 24)" fill="#FFB300"/>
+				</svg>
+			</div>
+			<div class="product-info">
                 <div class="product-name">Batata Frita Palito e bacon</div>
                 <div class="product-desc">Batatas fritas crocantes e sequinhas acompanhadas de molho buster.</div>
                 <div class="product-price">R$ 14,00</div>
@@ -328,6 +525,29 @@
         <div class="category-title" id="bebidas">Bebidas</div>
 
         <div class="product-card">
+            <div class="product-image-container">
+				<svg class="product-svg-img" viewBox="0 0 100 100" fill="none">
+                    <!-- Topo da Lata (Anel de Alumínio) -->
+                    <ellipse cx="50" cy="22" rx="22" ry="5" fill="#B0BEC5"/>
+                    <ellipse cx="50" cy="22" rx="16" ry="3.5" fill="#78909C"/>
+                    <circle cx="50" cy="22" r="2" fill="#CFD8DC"/>
+
+                    <!-- Corpo Principal da Lata -->
+                    <path d="M28 22C28 22 28 25 28 27C28 27 26 30 26 34V76C26 80 32 83 50 83C68 83 74 80 74 76V34C74 30 72 27 72 27C72 25 72 22 72 22H28Z" fill="#E53935"/>
+
+                    <!-- Brilho Lateral Curvado (Efeito de Reflexo Cilíndrico) -->
+                    <path d="M32 25C32 25 30 35 30 52C30 69 32 80 32 80" stroke="#FFF" stroke-width="3" stroke-linecap="round" opacity="0.3"/>
+
+                    <!-- Faixa Ondulada Dinâmica no Centro (Estilo Coca-Cola) -->
+                    <path d="M26 55Q40 42 52 56T74 48V56Q60 48 48 62T26 63V55Z" fill="#FFF"/>
+                    <path d="M26 59Q40 48 52 61T74 54V57Q60 51 48 65T26 66V59Z" fill="#FFCDD2" opacity="0.6"/>
+
+                    <!-- Sombra na Base da Lata para dar Profundidade -->
+                    <ellipse cx="50" cy="78" rx="24" ry="4" fill="#B71C1C" opacity="0.4"/>
+                    <path d="M28 75C28 79 36 82 50 82C64 82 72 79 72 75C72 78 64 81 50 81C36 81 28 78 28 75Z" fill="#90A4AE"/>
+                </svg>
+
+			</div>
             <div class="product-info">
                 <div class="product-name">Coca cola lata</div>
                 <div class="product-desc">300ml</div>
@@ -341,14 +561,37 @@
         </div>
             
         <div class="product-card">
+            <div class="product-image-container">
+				<svg class="product-svg-img" viewBox="0 0 100 100" fill="none">
+                    <!-- Topo da Lata (Anel de Alumínio) -->
+                    <ellipse cx="50" cy="22" rx="22" ry="5" fill="#B0BEC5"/>
+                    <ellipse cx="50" cy="22" rx="16" ry="3.5" fill="#78909C"/>
+                    <circle cx="50" cy="22" r="2" fill="#CFD8DC"/>
+
+                    <!-- Corpo Principal da Lata -->
+                    <path d="M28 22C28 22 28 25 28 27C28 27 26 30 26 34V76C26 80 32 83 50 83C68 83 74 80 74 76V34C74 30 72 27 72 27C72 25 72 22 72 22H28Z" fill="#E53935"/>
+
+                    <!-- Brilho Lateral Curvado (Efeito de Reflexo Cilíndrico) -->
+                    <path d="M32 25C32 25 30 35 30 52C30 69 32 80 32 80" stroke="#FFF" stroke-width="3" stroke-linecap="round" opacity="0.3"/>
+
+                    <!-- Faixa Ondulada Dinâmica no Centro (Estilo Coca-Cola) -->
+                    <path d="M26 55Q40 42 52 56T74 48V56Q60 48 48 62T26 63V55Z" fill="#FFF"/>
+                    <path d="M26 59Q40 48 52 61T74 54V57Q60 51 48 65T26 66V59Z" fill="#FFCDD2" opacity="0.6"/>
+
+                    <!-- Sombra na Base da Lata para dar Profundidade -->
+                    <ellipse cx="50" cy="78" rx="24" ry="4" fill="#B71C1C" opacity="0.4"/>
+                    <path d="M28 75C28 79 36 82 50 82C64 82 72 79 72 75C72 78 64 81 50 81C36 81 28 78 28 75Z" fill="#90A4AE"/>
+                </svg>
+
+			</div>
             <div class="product-info">
-            <div class="product-name">Guaraná Antartica lata</div>
-            <div class="product-desc">300ml</div>
+                <div class="product-name">Guaraná Antartica lata</div>
+                <div class="product-desc">300ml</div>
             <div class="product-price">R$ 8,00</div>
             </div>
             <div class="quantity-controls">
-            <button class="btn-qty" onclick="changeQuantity('Guaraná Antartica lata', 8.00, -1)">-</button>
-            <div class="qty-number" id="main-qty-Guaraná-Antartica-lata">0</div>
+                <button class="btn-qty" onclick="changeQuantity('Guaraná Antartica lata', 8.00, -1)">-</button>
+                <div class="qty-number" id="main-qty-Guaraná-Antartica-lata">0</div>
             <button class="btn-qty plus" onclick="changeQuantity('Guaraná Antartica lata', 8.00, 1)">+</button>
             </div>
         </div>
@@ -433,6 +676,17 @@
                     <button type="button" class="btn-cancel" onclick="closeReviewModal()">Voltar</button>
                     <button type="submit" class="btn-submit">Enviar via WhatsApp</button>
                 </div>
+				
+				<div class="whatsapp-alert">
+					<div class="alert-content">
+						<svg class="alert-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+							<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+						</svg>
+						<p class="alert-text">
+							* <span class="highlight">Atenção:</span> Os pedidos só serão concluídos via WhatsApp.
+						</p>
+					</div>
+				</div>
             </form>
         </div>
     </div>
