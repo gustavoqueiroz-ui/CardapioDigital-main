@@ -118,12 +118,39 @@
         .category-title {
             scroll-margin-top: 100px; /* Altura aproximada do menu de filtros */
         }
+		
+		.product-addons {
+			margin-top: 10px;
+			display: flex;
+			flex-direction: column;
+			gap: 5px;
+		}
+		.addon-title {
+			font-size: 12px;
+			font-weight: bold;
+			color: #555;
+		}
+		.addon-item {
+			font-size: 13px;
+			color: #666;
+			cursor: pointer;
+			display: flex;
+			align-items: center;
+			gap: 6px;
+		}
     </style>
 </head>
 <body>
     <header>
         <h1>🍔Dr. Burger</h1>
         <p>O melhor Hambúrguer Artesanal!</p>
+		<p id="store-status" style="font-weight: bold; margin-top: 5px;"></p>
+		<div style="margin-top: 5px; line-height: 1.4;">
+            <span id="store-status" style="font-weight: bold;"></span>
+            <div style="font-size: 11px; color: #666; margin-top: 2px;">
+                <span>📍 Av. Principal, 1234 - Centro</span>
+            </div>
+        </div>
     </header>
     <div class="container">
         <!-- Filtros por Categoria -->
@@ -143,91 +170,130 @@
 
         <!-- Categoria: Hambúrgueres -->
         <div class="category-title" id="hamburgueres">Hambúrgueres</div>
-        
+
         <div class="product-card">
             <div class="product-info">
-            <div class="product-name">Smash Burger Clássico</div>
-            <div class="product-desc">Pão brioche, carne de 90g, queijo cheddar derretido e maionese da casa.</div>
-            <div class="product-price">R$ 22,00</div>
+                <div class="product-name">Smash Burger Clássico</div>
+                <div class="product-desc">Pão brioche, carne de 90g, queijo cheddar derretido e maionese da casa.</div>
+                <div class="product-price">R$ 22,00</div>
+                
+                <!-- Opções de Composição para Hambúrguer -->
+                <!-- <div class="product-addons">
+                    <span class="addon-title">Adicionais:</span>
+                    <label class="addon-item">
+                        <input type="checkbox" name="addon-Smash-Burger-Clássico" value="Bacon" data-price="4.00" onchange="updateAddon('Smash Burger Clássico')"> Bacon (+R\$ 4,00)
+                    </label>
+                    <label class="addon-item">
+                        <input type="checkbox" name="addon-Smash-Burger-Clássico" value="Queijo Cheddar" data-price="3.50" onchange="updateAddon('Smash Burger Clássico')"> Queijo Cheddar (+R\$ 3,50)
+                    </label>
+                    <label class="addon-item">
+                        <input type="checkbox" name="addon-Smash-Burger-Clássico" value="Carne Extra 90g" data-price="7.00" onchange="updateAddon('Smash Burger Clássico')"> Carne extra 90g (+R\$ 7,00)
+                    </label>
+                </div>-->
             </div>
             <div class="quantity-controls">
-            <button class="btn-qty" onclick="changeQuantity('Smash Burger Clássico', 22.00, -1)">-</button>
-            <div class="qty-number" id="main-qty-Smash-Burger-Clássico">0</div>
-            <button class="btn-qty plus" onclick="changeQuantity('Smash Burger Clássico', 22.00, 1)">+</button>
+                <button class="btn-qty" onclick="changeQuantity('Smash Burger Clássico', 22.00, -1)">-</button>
+                <div class="qty-number" id="main-qty-Smash-Burger-Clássico">0</div>
+                <button class="btn-qty plus" onclick="changeQuantity('Smash Burger Clássico', 22.00, 1)">+</button>
             </div>
         </div>
 
         <div class="product-card">
             <div class="product-info">
-            <div class="product-name">Duplo Bacon Cheddar</div>
-            <div class="product-desc">Dois blends de 120g, muito bacon crocante, triplo cheddar e barbecue.</div>
-            <div class="product-price">R$ 34,90</div>
+                <div class="product-name">Duplo Bacon Cheddar</div>
+                <div class="product-desc">Dois blends de 120g, muito bacon crocante, triplo cheddar e barbecue.</div>
+                <div class="product-price">R\$ 34,90</div>
+                
+                <!-- Opções de Composição para Hambúrguer -->
+                <!--<div class="product-addons">
+                    <span class="addon-title">Adicionais:</span>
+                    <label class="addon-item">
+                        <input type="checkbox" name="addon-Duplo-Bacon-Cheddar" value="Bacon Extra" data-price="4.00" onchange="updateAddon('Duplo Bacon Cheddar')"> Bacon extra (+R\$ 4,00)
+                    </label>
+                    <label class="addon-item">
+                        <input type="checkbox" name="addon-Duplo-Bacon-Cheddar" value="Cheddar Extra" data-price="3.50" onchange="updateAddon('Duplo Bacon Cheddar')"> Cheddar extra (+R\$ 3,50)
+                    </label>
+                    <label class="addon-item">
+                        <input type="checkbox" name="addon-Duplo-Bacon-Cheddar" value="Blend Extra 120g" data-price="9.50" onchange="updateAddon('Duplo Bacon Cheddar')"> Blend extra 120g (+R\$ 9,50)
+                    </label>
+                </div>-->
             </div>
             <div class="quantity-controls">
-            <button class="btn-qty" onclick="changeQuantity('Duplo Bacon Cheddar', 34.90, -1)">-</button>
-            <div class="qty-number" id="main-qty-Duplo-Bacon-Cheddar">0</div>
-            <button class="btn-qty plus" onclick="changeQuantity('Duplo Bacon Cheddar', 34.90, 1)">+</button>
+                <button class="btn-qty" onclick="changeQuantity('Duplo Bacon Cheddar', 34.90, -1)">-</button>
+                <div class="qty-number" id="main-qty-Duplo-Bacon-Cheddar">0</div>
+                <button class="btn-qty plus" onclick="changeQuantity('Duplo Bacon Cheddar', 34.90, 1)">+</button>
             </div>
         </div>
 
         <div class="product-card">
             <div class="product-info">
-            <div class="product-name">Monster Chicken</div>
-            <div class="product-desc">Frango empanado super crocante, alface, tomate e molho agridoce.</div>
-            <div class="product-price">R$ 26,00</div>
+                <div class="product-name">Monster Chicken</div>
+                <div class="product-desc">Frango empanado super crocante, alface, tomate e molho agridoce.</div>
+                <div class="product-price">R\$ 26,00</div>
+                
+                <!-- Opções de Composição para Hambúrguer -->
+                <!--<div class="product-addons">
+                    <span class="addon-title">Adicionais:</span>
+                    <label class="addon-item">
+                        <input type="checkbox" name="addon-Monster-Chicken" value="Bacon" data-price="4.00" onchange="updateAddon('Monster Chicken')"> Bacon (+R\$ 4,00)
+                    </label>
+                    <label class="addon-item">
+                        <input type="checkbox" name="addon-Monster-Chicken" value="Queijo Cheddar" data-price="3.50" onchange="updateAddon('Monster Chicken')"> Queijo Cheddar (+R\$ 3,50)
+                    </label>
+                </div>-->
             </div>
             <div class="quantity-controls">
-            <button class="btn-qty" onclick="changeQuantity('Monster Chicken', 26.00, -1)">-</button>
-            <div class="qty-number" id="main-qty-Monster-Chicken">0</div>
-            <button class="btn-qty plus" onclick="changeQuantity('Monster Chicken', 26.00, 1)">+</button>
+                <button class="btn-qty" onclick="changeQuantity('Monster Chicken', 26.00, -1)">-</button>
+                <div class="qty-number" id="main-qty-Monster-Chicken">0</div>
+                <button class="btn-qty plus" onclick="changeQuantity('Monster Chicken', 26.00, 1)">+</button>
             </div>
         </div>
 
         <!-- Categoria: Acompanhamentos -->
         <div class="category-title" id="acompanhamentos">Acompanhamentos</div>
-        
+
         <div class="product-card">
             <div class="product-info">
-            <div class="product-name">Batata Frita Palito</div>
-            <div class="product-desc">Batatas fritas crocantes e sequinhas acompanhadas de molho buster.</div>
-            <div class="product-price">R$ 12,00</div>
+                <div class="product-name">Batata Frita Palito</div>
+                <div class="product-desc">Batatas fritas crocantes e sequinhas acompanhadas de molho buster.</div>
+                <div class="product-price">R$ 12,00</div>
             </div>
             <div class="quantity-controls">
-            <button class="btn-qty" onclick="changeQuantity('Batata Frita Palito', 12.00, -1)">-</button>
-            <div class="qty-number" id="main-qty-Batata-Frita-Palito">0</div>
-            <button class="btn-qty plus" onclick="changeQuantity('Batata Frita Palito', 12.00, 1)">+</button>
+                <button class="btn-qty" onclick="changeQuantity('Batata Frita Palito', 12.00, -1)">-</button>
+                <div class="qty-number" id="main-qty-Batata-Frita-Palito">0</div>
+                <button class="btn-qty plus" onclick="changeQuantity('Batata Frita Palito', 12.00, 1)">+</button>
             </div>
         </div>
 
         <div class="product-card">
             <div class="product-info">
-            <div class="product-name">Batata Frita Palito e bacon</div>
-            <div class="product-desc">Batatas fritas crocantes e sequinhas acompanhadas de molho buster.</div>
-            <div class="product-price">R$ 14,00</div>
+                <div class="product-name">Batata Frita Palito e bacon</div>
+                <div class="product-desc">Batatas fritas crocantes e sequinhas acompanhadas de molho buster.</div>
+                <div class="product-price">R$ 14,00</div>
             </div>
             <div class="quantity-controls">
-            <button class="btn-qty" onclick="changeQuantity('Batata Frita Palito e bacon', 14.00, -1)">-</button>
-            <div class="qty-number" id="main-qty-Batata-Frita-Palito-e-bacon">0</div>
-            <button class="btn-qty plus" onclick="changeQuantity('Batata Frita Palito e bacon', 14.00, 1)">+</button>
+                <button class="btn-qty" onclick="changeQuantity('Batata Frita Palito e bacon', 14.00, -1)">-</button>
+                <div class="qty-number" id="main-qty-Batata-Frita-Palito-e-bacon">0</div>
+                <button class="btn-qty plus" onclick="changeQuantity('Batata Frita Palito e bacon', 14.00, 1)">+</button>
             </div>
         </div>
 
-        <!-- Categoria: Bebidas-->
+        <!-- Categoria: Bebidas -->
         <div class="category-title" id="bebidas">Bebidas</div>
-        
+
         <div class="product-card">
             <div class="product-info">
-            <div class="product-name">Coca cola lata</div>
-            <div class="product-desc">300ml</div>
-            <div class="product-price">R$ 8,00</div>
+                <div class="product-name">Coca cola lata</div>
+                <div class="product-desc">300ml</div>
+                <div class="product-price">R$ 8,00</div>
             </div>
             <div class="quantity-controls">
-            <button class="btn-qty" onclick="changeQuantity('Coca cola lata', 8.00, -1)">-</button>
-            <div class="qty-number" id="main-qty-Coca-cola-lata">0</div>
-            <button class="btn-qty plus" onclick="changeQuantity('Coca cola lata', 8.00, 1)">+</button>
+                <button class="btn-qty" onclick="changeQuantity('Coca cola lata', 8.00, -1)">-</button>
+                <div class="qty-number" id="main-qty-Coca-cola-lata">0</div>
+                <button class="btn-qty plus" onclick="changeQuantity('Coca cola lata', 8.00, 1)">+</button>
             </div>
         </div>
-
+            
         <div class="product-card">
             <div class="product-info">
             <div class="product-name">Guaraná Antartica lata</div>
@@ -269,13 +335,13 @@
                 <div class="form-group">
                     <label for="name">Seu Nome *</label>
                     <!-- max 100 caracteres e apenas letras/espaços (incluindo acentos) -->
-                    <input type="text" id="name" required maxlength="50" pattern="[A-Za-zÀ-ÿ\s]+" title="O nome deve conter apenas letras e ter no máximo 100 caracteres." placeholder="Ex: João Silva">
+                    <input type="text" id="name" required maxlength="50"  minlength="3" pattern="[A-Za-zÀ-ÿ\s]+" title="O nome deve conter apenas letras e ter no máximo 100 caracteres." placeholder="Ex: João Silva">
                 </div>
                 
                 <div class="form-group">
                     <label for="phone">Número de Telefone / WhatsApp *</label>
                     <!-- max 14 caracteres e apenas números inteiros -->
-                    <input type="tel" id="phone" required maxlength="14" pattern="[0-9]+" title="O telefone deve conter apenas números (sem espaços ou traços) e ter no máximo 14 dígitos." placeholder="Ex: 33999999999">
+                    <input type="tel" id="phone" required maxlength="14" minlength="10" pattern="[0-9]+" title="O telefone deve conter apenas números (sem espaços ou traços) e ter no máximo 14 dígitos." placeholder="Ex: 33999999999">
                 </div>
                 
                 <div class="form-group">
@@ -289,7 +355,7 @@
                 <div class="form-group" id="address-section">
                     <label for="address">Endereço Completo de Entrega *</label>
                     <!-- max 100 caracteres -->
-                    <input type="text" id="address" required maxlength="60" placeholder="Rua, número, bairro, apto">
+                    <input type="text" id="address" required maxlength="60" minlength="10" placeholder="Rua, número, bairro, apto">
                 </div>
                 
                 <div class="form-group">
@@ -409,29 +475,139 @@
         function sendOrder(event) {
             event.preventDefault();
             if (cart.length === 0) { alert("Adicione itens antes!"); return; }
+            
+            
             const name = document.getElementById('name').value;
             const phone = document.getElementById('phone').value;
             const method = document.querySelector('input[name="delivery-method"]:checked').value;
             const address = document.getElementById('address').value;
             const payment = document.getElementById('payment').value;
             const observacao = document.getElementById('Observacao').value;
-            
+            const MINIMO = 16.00; // Valor mínimo para envio do pedido
             
             let itemsText = "";
             cart.forEach(item => { itemsText += `• *${item.quantity}x* ${item.name} (R$ ${(item.price * item.quantity).toFixed(2).replace('.', ',')})\n`; });
             const isDelivery = method === "delivery";
             const finalTotal = isDelivery ? (total + DELIVERY_FEE) : total;
+            
+            if (finalTotal < MINIMO) { alert(`O valor mínimo para pedido é R$ ${MINIMO.toFixed(2).replace('.', ',')}!`); return; }
+            
             let message = `🍔 *NOVO PEDIDO CONFIRMADO* 🍔\n\n👤 *Cliente:* ${name}\n📞 *Contato:* ${phone}\n📌 *Modalidade:* ${isDelivery ? "🛵 Delivery" : "🛍️ Retirada"}\n`;
             if (isDelivery) { message += `📍 *Endereço:* ${address}\n`; }
             message += `💳 *Pagamento:* ${payment}\n\n🛒 *Itens:*\n${itemsText}\n *Observação:*\n${observacao}\n`;
             if (isDelivery) { message += `Subtotal: R$ ${total.toFixed(2).replace('.', ',')}\nTaxa: R$ ${DELIVERY_FEE.toFixed(2).replace('.', ',')}\n`; }
             message += `💰 *Total Geral: R$ ${finalTotal.toFixed(2).replace('.', ',')}*`;
             window.open(`https://api.whatsapp.com/send?phone=5533999648737&amp;&text=${encodeURIComponent(message)}`, '_blank');
+			const pedidoConcluido = confirm("O seu pedido foi concluído com sucesso no WhatsApp?");
+
+			// 3. Se o usuário clicar em "OK" (true), chama a função de atualizar a tela
+			if (pedidoConcluido) {
+				location.reload()// Substitua pelo nome real da sua função de atualização (ex: location.reload())
+			}
         }
+		
 
         document.getElementById('phone').addEventListener('input', function (e) {
 			e.target.value = e.target.value.replace(/\D/g, '');
 		});
+		
+		function checkStoreStatus() {
+            const now = new Date();
+            const dayOfWeek = now.getDay(); // 0 = Domingo, 1 = Segunda, ..., 6 = Sábado
+            const currentHour = now.getHours();
+            const currentMinute = now.getMinutes();
+            const currentTimeInMinutes = (currentHour * 60) + currentMinute;
+
+            // Dados mocados de horário (Formato: Fechado na Segunda. Terça a Domingo das 18:00 às 23:30)
+            const isOpenDay = dayOfWeek !== 1; // 1 é segunda-feira (Fechado)
+            const openTimeInMinutes = 18 * 60; // 18:00
+            const closeTimeInMinutes = 23 * 60 + 30; // 23:30
+
+            const statusElement = document.getElementById('store-status');
+
+            if (isOpenDay && currentTimeInMinutes >= openTimeInMinutes && currentTimeInMinutes < closeTimeInMinutes) {
+                // Se faltar menos de 30 minutos para fechar, avisa que está fechando
+                if (closeTimeInMinutes - currentTimeInMinutes <= 30) {
+                    statusElement.innerHTML = "⚠️ Fechando em breve!";
+                    statusElement.style.color = "#ff9800";
+                } else {
+                    statusElement.innerHTML = "🟢 Aberto Agora";
+                    statusElement.style.color = "#4caf50";
+                }
+            } else {
+                statusElement.innerHTML = "🔴 Fechado no momento";
+                statusElement.style.color = "#f44336";
+            }
+        }
+
+        // Executa a função ao carregar a página
+        window.onload = function() {
+            checkStoreStatus();
+            // Opcional: Se você já tiver outras funções no window.onload, adicione a chamada dentro delas.
+        };
+
+        let carrinho = {};
+
+        function updateAddon(productName) {
+            const formattedName = productName.replace(/\s+/g, '-');
+            const checkboxes = document.querySelectorAll(`input[name="addon-${formattedName}"]:checked`);
+            
+            let adicionaisSelecionados = [];
+            let precoAdicionais = 0;
+
+            checkboxes.forEach(checkbox => {
+                precoAdicionais += parseFloat(checkbox.getAttribute('data-price'));
+                adicionaisSelecionados.push(checkbox.value);
+            });
+
+            if (carrinho[productName]) {
+                carrinho[productName].adicionais = adicionaisSelecionados;
+                carrinho[productName].precoAdicionais = precoAdicionais;
+                atualizarInterfaceCarrinho(); 
+            }
+        }
+
+        function changeQuantity(productName, basePrice, change) {
+            const formattedName = productName.replace(/\s+/g, '-');
+            const qtyElement = document.getElementById(`main-qty-${formattedName}`);
+            let currentQty = parseInt(qtyElement.innerText) || 0;
+            
+            currentQty += change;
+            if (currentQty < 0) currentQty = 0;
+            
+            qtyElement.innerText = currentQty;
+
+            if (currentQty > 0) {
+                if (!carrinho[productName]) {
+                    carrinho[productName] = {
+                        quantidade: 0,
+                        precoBase: basePrice,
+                        precoAdicionais: 0,
+                        adicionais: []
+                    };
+                }
+                carrinho[productName].quantidade = currentQty;
+                updateAddon(productName);
+            } else {
+                delete carrinho[productName];
+            }
+
+            atualizarInterfaceCarrinho();
+        }
+
+        function atualizarInterfaceCarrinho() {
+            let totalCarrinho = 0;
+
+            console.log("--- CARRINHO ATUAL ---");
+            for (const [nome, item] of Object.entries(carrinho)) {
+                const precoUnitarioTotal = item.precoBase + item.precoAdicionais;
+                const subtotalItem = precoUnitarioTotal * item.quantidade;
+                totalCarrinho += subtotalItem;
+
+                console.log(`${item.quantidade}x ${nome} (Adicionais: ${item.adicionais.join(', ') || 'Nenhum'}) - Subtotal: R$ ${subtotalItem.toFixed(2)}`);
+            }
+            console.log(`TOTAL GERAL: R$ ${totalCarrinho.toFixed(2)}`);
+        }
     </script>
 </body>
 </html>
