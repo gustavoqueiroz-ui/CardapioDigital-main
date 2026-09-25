@@ -890,17 +890,17 @@
         }
 
         async function fetchCompanies() {
-            // try {
-            //     const response = await fetch(EMPRESAS_URL);
-            //     const rawText = await response.text();
-            //     const data = safeJSONParse(rawText);
+            try {
+                const response = await fetch(EMPRESAS_URL);
+                const rawText = await response.text();
+                const data = safeJSONParse(rawText);
                 
-            //     // Map and sanitize active companies
-            //     state.empresas = data
-            //         .map(item => item.empresa)
-            //         .filter(emp => emp && emp.ativa !== false);
+                // Map and sanitize active companies
+                state.empresas = data
+                    .map(item => item.empresa)
+                    .filter(emp => emp && emp.ativa !== false);
 
-            // } catch (err) {
+            } catch (err) {
             try {
                 const rawText = retornaEmpresas();
                 const data = safeJSONParse(rawText);
@@ -912,7 +912,7 @@
                 console.error("Erro ao carregar empresas:", err);
                 showToast("Erro ao carregar lista de estabelecimentos.");
             }
-          //}
+          }
         }
 
         async function handleRouting() {
@@ -1013,21 +1013,21 @@
                 </div>
             `;
 
-            // try {
-            //     const response1 = await fetch(company.link);
-            //     const rawText = await response1.text();
-            //     const data = safeJSONParse(rawText);
+            try {
+                const response1 = await fetch(company.link);
+                const rawText = await response1.text();
+                const data = safeJSONParse(rawText);
 
-            //     // Filter products where "ativo" == "s"
-            //     state.products = (data[0].produtos || []).filter(p => p.ativo === "s" || p.ativo === "S");
-            //     state.categories = data[0].categoria || [];
-            //     state.selectedCategory = 'todas';
-            //     state.cart = []; // Reset cart for new company
+                // Filter products where "ativo" == "s"
+                state.products = (data[0].produtos || []).filter(p => p.ativo === "s" || p.ativo === "S");
+                state.categories = data[0].categoria || [];
+                state.selectedCategory = 'todas';
+                state.cart = []; // Reset cart for new company
 
-            //     renderCompanyProductsView();
-            //     updateCartBar();
+                renderCompanyProductsView();
+                updateCartBar();
 
-            // } catch (err) {
+            } catch (err) {
             try {
                 const rawText = retornaProdutos(company.id);
                 const data = safeJSONParse(rawText);
@@ -1048,7 +1048,7 @@
                     </div>
                 `;
             }
-          //}
+          }
         }
 
         function renderCompanyProductsView() {
@@ -1100,7 +1100,7 @@
 
             const footerHtml = `
                 <footer class="footer-powered">
-                    powered by <strong>COMPREAQUIDEVS</strong>
+                    powered by <strong>COMPREAQUI - BonAPPetit</strong>
                 </footer>
             `;
 
@@ -1575,19 +1575,19 @@
                       "pais": "Brasil"
                     },
                     "atendimento": {
-                      "inicioSegunda": "18:00",
+                      "inicioSegunda": "8:00",
                       "fimSegunda": "23:30",
-                      "inicioTerca": "18:00",
-                      "fimTerca": "18:00",
-                      "inicioQuarta": "18:00",
+                      "inicioTerca": "8:00",
+                      "fimTerca": "23:30",
+                      "inicioQuarta": "8:00",
                       "fimQuarta": "23:30",
-                      "inicioQuinta": "18:00",
+                      "inicioQuinta": "8:00",
                       "fimQuinta": "23:30",
-                      "inicioSexta": "18:00",
+                      "inicioSexta": "8:00",
                       "fimSexta": "23:30",
-                      "inicioSabado": "18:00",
+                      "inicioSabado": "8:00",
                       "fimSabado": "23:30",
-                      "inicioDomingo": "18:00",
+                      "inicioDomingo": "8:00",
                       "fimDomingo": "23:30"
                     }
                   }
