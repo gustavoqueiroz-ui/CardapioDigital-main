@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Cardápio Digital Multiempresa</title>
+    <title>Cardápio Digital</title>
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -627,6 +627,7 @@
             transform: translateX(-50%) translateY(0);
         }
     </style>
+    <link id="favicon" rel="icon" type="image/png" href="imagens/logo-cardapio.png">
 </head>
 <body>
 
@@ -980,21 +981,21 @@
                 </div>
             `;
 
-            try {
-                const response1 = await fetch(company.link);
-                const rawText = await response1.text();
-                const data = safeJSONParse(rawText);
+            // try {
+            //     const response1 = await fetch(company.link);
+            //     const rawText = await response1.text();
+            //     const data = safeJSONParse(rawText);
 
-                // Filter products where "ativo" == "s"
-                state.products = (data[0].produtos || []).filter(p => p.ativo === "s" || p.ativo === "S");
-                state.categories = data[0].categoria || [];
-                state.selectedCategory = 'todas';
-                state.cart = []; // Reset cart for new company
+            //     // Filter products where "ativo" == "s"
+            //     state.products = (data[0].produtos || []).filter(p => p.ativo === "s" || p.ativo === "S");
+            //     state.categories = data[0].categoria || [];
+            //     state.selectedCategory = 'todas';
+            //     state.cart = []; // Reset cart for new company
 
-                renderCompanyProductsView();
-                updateCartBar();
+            //     renderCompanyProductsView();
+            //     updateCartBar();
 
-            } catch (err) {
+            // } catch (err) {
 				try
 				{
 				    const rawText = retornaProdutos(company.id);
@@ -1018,7 +1019,7 @@
 						</div>
 					`;
 				}
-            }
+            // }
         }
 
         function renderCompanyProductsView() {
@@ -1485,6 +1486,11 @@
 			document.getElementById('addon-current-total').innerText = `R$ ${total.toFixed(2).replace('.', ',')}`;
 		}
   
+        
+        document.getElementById('c-telefone').addEventListener('input', function (e) {
+			e.target.value = e.target.value.replace(/\D/g, '');
+		});
+
 		function retornaEmpresas(){
 			return `[
 				 {
@@ -1495,9 +1501,10 @@
 					"descricao": "O melhor hamburguer artesanal",
 					"ativa": true,
 					"telefone": "+55 (11) 4003-1234",
-					"taxaentrega": 7.00,
+					"taxaentrega": 6.00,
 					"tempoentrega": "20 a 40 min.",
-					"endereco": {
+                    "minimo": 20.00,
+                    "endereco": {
 					  "logradouro": "Avenida Paulista",
 					  "numero": "1000",
 					  "complemento": "Edifício Corporate, Sala 402",
@@ -1535,6 +1542,7 @@
 					"telefone": "+55 (11) 4003-1278",
 					"taxaentrega": 7.00,
 					"tempoentrega": "20 a 30 min.",
+					"minimo": 30.00,
 					"endereco": {
 					  "logradouro": "Avenida Paulista",
 					  "numero": "1000",
@@ -1566,6 +1574,7 @@
 				]`;
 		}
 		
+
 		function retornaProdutos(empresaId){
             if(empresaId == "lanches-avenida")
             {  
