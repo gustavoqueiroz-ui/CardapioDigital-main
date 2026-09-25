@@ -626,6 +626,33 @@
         .toast.show {
             transform: translateX(-50%) translateY(0);
         }
+
+        /* Footer Powered By */
+        .footer-powered {
+            text-align: center;
+            padding: 24px 12px 12px 12px;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+        }
+
+        .footer-powered strong {
+            background: linear-gradient(135deg, #f59e0b, #ef4444);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+
+        .checkout-alert-info {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            text-align: center;
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
     </style>
     <link id="favicon" rel="icon" type="image/png" href="imagens/logo-cardapio.png">
 </head>
@@ -772,9 +799,14 @@
                     </div>
                 </div>
 
-                <button type="submit" class="btn-submit">
-                    <i class="fa-brands fa-whatsapp" style="font-size: 1.2rem;"></i> Finalizar Pedido via WhatsApp
-                </button>
+                <div>
+                    <button type="submit" class="btn-submit">
+                        <i class="fa-brands fa-whatsapp" style="font-size: 1.2rem;"></i> Finalizar Pedido via WhatsApp
+                    </button>
+                    <p class="checkout-alert-info">
+                        <i class="fa-solid fa-circle-info"></i> O seu pedido só será finalizado após o envio no WhatsApp.
+                    </p>
+                </div>
             </form>
         </div>
     </div>
@@ -830,7 +862,6 @@
             try {
                 return JSON.parse(rawText);
             } catch (e) {
-                // Fix common gist json errors like missing quotes around keys or trailing commas
                 let cleaned = rawText
                     .replace(/([{,]\s*)([a-zA-Z0-9_]+)\s*:/g, '$1"$2":') // Add quotes to unquoted keys
                     .replace(/,\s*([\]}])/g, '$1') // Remove trailing commas
@@ -870,22 +901,18 @@
             //         .filter(emp => emp && emp.ativa !== false);
 
             // } catch (err) {
-			
-				try
-				{
-					const rawText = retornaEmpresas();
-					const data = safeJSONParse(rawText);
-                
-					state.empresas = data
-						.map(item => item.empresa)
-						.filter(emp => emp && emp.ativa !== false);
-				}
-				catch(err){
-				
-					console.error("Erro ao carregar empresas:", err);
-					showToast("Erro ao carregar lista de estabelecimentos.");
-				}
-			// }
+            try {
+                const rawText = retornaEmpresas();
+                const data = safeJSONParse(rawText);
+            
+                state.empresas = data
+                    .map(item => item.empresa)
+                    .filter(emp => emp && emp.ativa !== false);
+            } catch(err) {
+                console.error("Erro ao carregar empresas:", err);
+                showToast("Erro ao carregar lista de estabelecimentos.");
+            }
+          //}
         }
 
         async function handleRouting() {
@@ -905,10 +932,10 @@
             renderCompaniesHub();
         }
 
-		window.addEventListener('popstate', function(event) {
-			window.location.reload();
-		});
-		
+        window.addEventListener('popstate', function(event) {
+            window.location.reload();
+        });
+        
         function renderCompaniesHub() {
             document.getElementById('cart-bar').style.display = 'none';
             document.getElementById('header-title').innerHTML = `<i class="fa-solid fa-utensils"></i> Cardápio Digital`;
@@ -949,7 +976,6 @@
         }
 
         function selectCompany(companyId) {
-            // Update URL without reloading page
             const newUrl = window.location.pathname + '?empresa=' + companyId;
             window.history.pushState({ companyId }, '', newUrl);
             handleRouting();
@@ -964,20 +990,29 @@
                 </div>
             `;
 
+            // Formatação do Endereço da Empresa
+            let enderecoStr = '';
+            if (company.endereco) {
+                const e = company.endereco;
+                enderecoStr = `${e.logradouro || ''}, ${e.numero || ''}${e.complemento ? ' - ' + e.complemento : ''} - ${e.bairro || ''}, ${e.cidade || ''}`;
+            } else {
+                enderecoStr = 'Endereço não disponível';
+            }
+
             // Update Header for Company
             document.getElementById('header-title').innerHTML = company.nome;
             document.getElementById('company-info-container').innerHTML = `
-                <p id="store-status" style="font-weight: bold; margin-top: 5px;"></p>
-						<div style="margin-top: 5px; line-height: 1.4;">
-							<span id="store-status" style="font-weight: bold;"></span>
-							<div style="font-size: 11px; color: #666; margin-top: 2px;">
-								<span>📍 Av. Principal, 1234 - Centro</span>
-							</div>
-						</div>
-				<div class="header-info-badge">
-				    <span><i class="fa-solid fa-phone"></i> ${company.telefone}</span>
+                <div style="margin-top: 5px; line-height: 1.4;">
+                    <span id="store-status" style="font-weight: bold;"></span>
+                    <div style="font-size: 11px; color: #d1d5db; margin-top: 2px;">
+                        <span>📍 ${enderecoStr}</span>
+                    </div>
+                </div>
+                <div class="header-info-badge">
+                    <span><i class="fa-solid fa-phone"></i> ${company.telefone}</span>
                     <span>•</span>
                     <span><i class="fa-solid fa-motorcycle"></i> ${formatMoney(company.taxaentrega)}</span>
+                    ${company.minimo ? `<span>• Min: ${formatMoney(company.minimo)}</span>` : ''}
                 </div>
             `;
 
@@ -996,36 +1031,32 @@
             //     updateCartBar();
 
             // } catch (err) {
-				try
-				{
-				    const rawText = retornaProdutos(company.id);
-					const data = safeJSONParse(rawText);
+            try {
+                const rawText = retornaProdutos(company.id);
+                const data = safeJSONParse(rawText);
 
-					// Filter products where "ativo" == "s"
-					state.products = (data[0].produtos || []).filter(p => p.ativo === "s" || p.ativo === "S");
-					state.categories = data[0].categoria || [];
-					state.selectedCategory = 'todas';
-					state.cart = []; // Reset cart for new company
+                state.products = (data[0].produtos || []).filter(p => p.ativo === "s" || p.ativo === "S");
+                state.categories = data[0].categoria || [];
+                state.selectedCategory = 'todas';
+                state.cart = []; // Reset cart for new company
 
-					renderCompanyProductsView();
-					updateCartBar();
-				}
-				catch(err){
-					console.error("Erro ao carregar produtos:", err);
-					container.innerHTML = `
-						<div style="text-align:center; padding: 40px 0; color: var(--danger-color);">
-							<i class="fa-solid fa-circle-exclamation" style="font-size:2rem; margin-bottom:10px;"></i>
-							<p>Erro ao carregar o cardápio desta empresa.</p>
-						</div>
-					`;
-				}
-            // }
+                renderCompanyProductsView();
+                updateCartBar();
+            } catch(err) {
+                console.error("Erro ao carregar produtos:", err);
+                container.innerHTML = `
+                    <div style="text-align:center; padding: 40px 0; color: var(--danger-color);">
+                        <i class="fa-solid fa-circle-exclamation" style="font-size:2rem; margin-bottom:10px;"></i>
+                        <p>Erro ao carregar o cardápio desta empresa.</p>
+                    </div>
+                `;
+            }
+          //}
         }
 
         function renderCompanyProductsView() {
             const container = document.getElementById('app-container');
 
-            // Category Chips HTML
             let categoriesSet = new Set(state.products.map(p => p.categoria.toLowerCase()));
             let catChipsHtml = `<button class="category-chip ${state.selectedCategory === 'todas' ? 'active' : ''}" onclick="filterCategory('todas')">Todas</button>`;
 
@@ -1037,7 +1068,6 @@
                 `;
             });
 
-            // Filter Products
             const filteredProducts = state.selectedCategory === 'todas'
                 ? state.products
                 : state.products.filter(p => p.categoria.toLowerCase() === state.selectedCategory);
@@ -1071,15 +1101,23 @@
 
             productsHtml += `</div>`;
 
+            // Adiciona footer powered by COMPREAQUIDEVS
+            const footerHtml = `
+                <footer class="footer-powered">
+                    powered by <strong>COMPREAQUIDEVS</strong>
+                </footer>
+            `;
+
             container.innerHTML = `
                 <div class="category-scroll">
                     ${catChipsHtml}
                 </div>
                 <div class="section-title">Cardápio</div>
                 ${productsHtml}
+                ${footerHtml}
             `;
-			
-			checkStoreStatus();
+            
+            checkStoreStatus();
         }
 
         function filterCategory(cat) {
@@ -1095,7 +1133,7 @@
             const prod = filtered[productIndex];
             state.activeModalProduct = prod;
             state.activeProductQty = 1;
-            state.selectedOptions = []; // Armazenará objetos { name, preco }
+            state.selectedOptions = [];
 
             document.getElementById('p-modal-title').textContent = prod.nome;
             document.getElementById('p-modal-desc').textContent = prod.descricao || 'Sem descrição.';
@@ -1104,9 +1142,8 @@
             const optionsContainer = document.getElementById('p-modal-options');
             optionsContainer.innerHTML = '';
 
-            // Verifica se o produto tem a propriedade "composicao" do JSON
             if (prod.composicao && Array.isArray(prod.composicao) && prod.composicao.length > 0) {
-                prod.composicao.forEach((item, idx) => {
+                prod.composicao.forEach((item) => {
                     const nomeComp = item.name || item.nome;
                     const precoComp = parseFloat(item.preco) || 0;
 
@@ -1121,30 +1158,10 @@
                 optionsContainer.innerHTML = `<p style="font-size: 0.8rem; color: var(--text-muted);">Sem adicionais/opcionais para este item.</p>`;
             }
 
-            // Recalcula o preço exibido no modal
             updateModalPrice();
-
             document.getElementById('product-modal').classList.add('active');
         }
 
-        
-        function confirmAddToCart() {
-            if (!state.activeModalProduct) return;
-
-            const cartItem = {
-                id: Date.now(),
-                nome: state.activeModalProduct.nome,
-                preco: state.activeModalProduct.preco_custo,
-                quantidade: state.activeProductQty,
-                opcoes: [...state.selectedOptions]
-            };
-
-            state.cart.push(cartItem);
-            closeProductModal();
-            updateCartBar();
-            showToast("Produto adicionado ao carrinho!");
-        }
-        
         function closeProductModal() {
             document.getElementById('product-modal').classList.remove('active');
         }
@@ -1164,7 +1181,6 @@
             updateModalPrice();
         }
 
-        // Função auxiliar para recalcular e atualizar o preço exibido no modal
         function updateModalPrice() {
             if (!state.activeModalProduct) return;
             
@@ -1183,13 +1199,12 @@
             const extraPrice = state.selectedOptions.reduce((sum, opt) => sum + opt.preco, 0);
             const unitPriceWithExtras = basePrice + extraPrice;
 
-            // Nomes das opções selecionadas para exibição formatada
             const opcoesNomes = state.selectedOptions.map(o => `${o.name} (+${formatMoney(o.preco)})`);
 
             const cartItem = {
                 id: Date.now(),
                 nome: state.activeModalProduct.nome,
-                preco: unitPriceWithExtras, // Salva o preço unitário já com os opcionais inclusos
+                preco: unitPriceWithExtras,
                 quantidade: state.activeProductQty,
                 opcoes: opcoesNomes
             };
@@ -1317,6 +1332,12 @@
             }
         }
 
+        function resetCart() {
+            state.cart = [];
+            updateCartBar();
+            closeCartModal();
+        }
+
         function handleCheckout(event) {
             event.preventDefault();
 
@@ -1324,6 +1345,11 @@
                 showToast("Adicione produtos ao carrinho antes de finalizar.");
                 return;
             }
+
+            // Subtotal e Valor Mínimo da Empresa
+            const subtotal = state.cart.reduce((sum, item) => sum + (item.preco * item.quantidade), 0);
+            const valorMinimo = state.currentCompany ? (parseFloat(state.currentCompany.minimo) || 0) : 0;
+
 
             // Input elements
             const nomeInput = document.getElementById('c-nome');
@@ -1369,10 +1395,13 @@
 
             if (!isValid) return;
 
-            // Calculations
-            const subtotal = state.cart.reduce((sum, item) => sum + (item.preco * item.quantidade), 0);
             const taxa = tipoEntrega === 'delivery' ? (state.currentCompany ? state.currentCompany.taxaentrega : 0) : 0;
             const total = subtotal + taxa;
+
+            if (total < valorMinimo) {
+                showToast(`O valor mínimo para pedidos nesta empresa é de ${formatMoney(valorMinimo)}.`);
+                return;
+            }
 
             // Format WhatsApp Message
             let msg = `* NOVO PEDIDO - ${state.currentCompany ? state.currentCompany.nome.toUpperCase() : 'CARDÁPIO'}*\n\n`;
@@ -1406,244 +1435,241 @@
             }
             msg += `*TOTAL DO PEDIDO:* ${formatMoney(total)}\n`;
 
-            // Encode & Redirect to WhatsApp
             const encodedMsg = encodeURIComponent(msg);
             const whatsappUrl = `https://wa.me/${WHATSAPP_TARGET}?text=${encodedMsg}`;
 
             window.open(whatsappUrl, '_blank');
+
+            // Pergunta se o pedido foi enviado com sucesso
+            setTimeout(() => {
+                const confirmRes = confirm("Seu pedido foi finalizado e enviado com sucesso no WhatsApp?");
+                if (confirmRes) {
+                    resetCart();
+                    showToast("Pedido finalizado com sucesso!");
+                }
+            }, 600);
         }
-		
-		function checkStoreStatus() {
-            const now = new Date();
-            const dayOfWeek = now.getDay(); // 0 = Domingo, 1 = Segunda, ..., 6 = Sábado
-            const currentHour = now.getHours();
-            const currentMinute = now.getMinutes();
-            const currentTimeInMinutes = (currentHour * 60) + currentMinute;
-
-            // Dados mocados de horário (Formato: Fechado na Segunda. Terça a Domingo das 18:00 às 23:30)
-            const isOpenDay = dayOfWeek !== 1; // 1 é segunda-feira (Fechado)
-            const openTimeInMinutes = 18 * 60; // 18:00
-            const closeTimeInMinutes = 23 * 60 + 30; // 23:30
-
+        
+        function checkStoreStatus() {
             const statusElement = document.getElementById('store-status');
+            if (!statusElement || !state.currentCompany || !state.currentCompany.atendimento) {
+                return;
+            }
 
-            if (isOpenDay && currentTimeInMinutes >= openTimeInMinutes && currentTimeInMinutes < closeTimeInMinutes) {
-                // Se faltar menos de 30 minutos para fechar, avisa que está fechando
-                //if (closeTimeInMinutes - currentTimeInMinutes <= 30) {
-                //    statusElement.innerHTML = "⚠️ Fechando em breve!";
-                //    statusElement.style.color = "#ff9800";
-                //} else {
-                    statusElement.innerHTML = "🟢 Aberto Agora";
-                    statusElement.style.color = "#4caf50";
-                //}
+            const atendimento = state.currentCompany.atendimento;
+            const now = new Date();
+            const dayOfWeek = now.getDay(); // 0 = Domingo, 1 = Segunda, 2 = Terça, etc.
+
+            // Mapeamento dos dias para as chaves no objeto de atendimento
+            const dayKeys = [
+                { inicio: 'inicioDomingo', fim: 'fimDomingo' },
+                { inicio: 'inicioSegunda', fim: 'fimSegunda' },
+                { inicio: 'inicioTerca', fim: 'fimTerca' },
+                { inicio: 'inicioQuarta', fim: 'fimQuarta' },
+                { inicio: 'inicioQuinta', fim: 'fimQuinta' },
+                { inicio: 'inicioSexta', fim: 'fimSexta' },
+                { inicio: 'inicioSabado', fim: 'fimSabado' }
+            ];
+
+            const todayKey = dayKeys[dayOfWeek];
+            const inicioStr = atendimento[todayKey.inicio];
+            const fimStr = atendimento[todayKey.fim];
+
+            if (!inicioStr || !fimStr) {
+                statusElement.innerHTML = "🔴 Fechado no momento";
+                statusElement.style.color = "#f44336";
+                return;
+            }
+
+            // Converter horários "HH:MM" em minutos desde o início do dia
+            const parseMinutes = (timeStr) => {
+                const [h, m] = timeStr.split(':').map(Number);
+                return (h * 60) + m;
+            };
+
+            const inicioMin = parseMinutes(inicioStr);
+            let fimMin = parseMinutes(fimStr);
+            const atualMin = (now.getHours() * 60) + now.getMinutes();
+
+            // Trata turnos que viram a madrugada (ex: 18:00 até 02:00)
+            let isOpen = false;
+            if (fimMin <= inicioMin) {
+                // Caso fim == inicio (ex: 18:00 às 18:00 indica dia fechado)
+                if (fimMin === inicioMin) {
+                    isOpen = false;
+                } else {
+                    isOpen = atualMin >= inicioMin || atualMin < fimMin;
+                }
+            } else {
+                isOpen = atualMin >= inicioMin && atualMin < fimMin;
+            }
+
+            if (isOpen) {
+                statusElement.innerHTML = "🟢 Aberto Agora";
+                statusElement.style.color = "#4caf50";
             } else {
                 statusElement.innerHTML = "🔴 Fechado no momento";
                 statusElement.style.color = "#f44336";
             }
         }
-		
-		function openAddonsScreen(productId) {
-			currentProductSelection = currentCompany.products.find(p => p.id === productId);
-			selectedAddons = [];
-
-			document.getElementById('addon-product-title').innerText = currentProductSelection.name;
-			document.getElementById('addon-product-desc').innerText = currentProductSelection.desc;
-
-			const addonsList = document.getElementById('addons-list');
-			addonsList.innerHTML = '';
-
-			currentCompany.addons.forEach(addon => {
-				const item = document.createElement('div');
-				item.className = 'addon-item';
-				item.innerHTML = `
-					<div>
-						<span style="font-weight: 500;">${addon.name}</span><br>
-						<span style="font-size: 13px; color: var(--text-muted);">+ R$ ${addon.price.toFixed(2).replace('.', ',')}</span>
-					</div>
-					<input type="checkbox" class="addon-checkbox" value="${addon.id}" onchange="toggleAddon('${addon.id}', this.checked)">
-				`;
-				addonsList.appendChild(item);
-			});
-
-			updateAddonTotal();
-			document.getElementById('screen-addons').classList.add('active');
-		}
-		
-		function toggleAddon(addonId, isChecked) {
-			const addon = currentCompany.addons.find(a => a.id === addonId);
-			if (isChecked) {
-				selectedAddons.push(addon);
-			} else {
-				selectedAddons = selectedAddons.filter(a => a.id !== addonId);
-			}
-			updateAddonTotal();
-		}
-
-		function updateAddonTotal() {
-			const productPrice = currentProductSelection ? currentProductSelection.price : 0;
-			const addonsPrice = selectedAddons.reduce((sum, item) => sum + item.price, 0);
-			const total = productPrice + addonsPrice;
-			document.getElementById('addon-current-total').innerText = `R$ ${total.toFixed(2).replace('.', ',')}`;
-		}
-  
         
         document.getElementById('c-telefone').addEventListener('input', function (e) {
-			e.target.value = e.target.value.replace(/\D/g, '');
-		});
+            e.target.value = e.target.value.replace(/\D/g, '');
+        });
 
-		function retornaEmpresas(){
-			return `[
-				 {
-				  "empresa": {
-					"id": "lanches-avenida",
-					"link": "https://gist.githubusercontent.com/gustavoamorimqueiroz1/ffa6262e6c52acfcc27c3bbaf57f0f4e/raw/produtos_.txt",
-					"nome": "Dr. Burguer",
-					"descricao": "O melhor hamburguer artesanal",
-					"ativa": true,
-					"telefone": "+55 (11) 4003-1234",
-					"taxaentrega": 6.00,
-					"tempoentrega": "20 a 40 min.",
+        function retornaEmpresas(){
+            return `[
+                 {
+                  "empresa": {
+                    "id": "lanches-avenida",
+                    "link": "https://gist.githubusercontent.com/gustavoamorimqueiroz1/ffa6262e6c52acfcc27c3bbaf57f0f4e/raw/produtos_.txt",
+                    "nome": "Dr. Burguer",
+                    "descricao": "O melhor hamburguer artesanal",
+                    "ativa": true,
+                    "telefone": "+55 (11) 4003-1234",
+                    "taxaentrega": 6.00,
+                    "tempoentrega": "20 a 40 min.",
                     "minimo": 20.00,
                     "endereco": {
-					  "logradouro": "Avenida Paulista",
-					  "numero": "1000",
-					  "complemento": "Edifício Corporate, Sala 402",
-					  "bairro": "Bela Vista",
-					  "cidade": "São Paulo",
-					  "estado": "SP",
-					  "cep": "01310-100",
-					  "pais": "Brasil"
-					},
-					"atendimento": {
-					  "inicioSegunda": "18:00",
-					  "fimSegunda": "18:00",
-					  "inicioTerca": "18:00",
-					  "fimTerca": "23:30",
-					  "inicioQuarta": "18:00",
-					  "fimQuarta": "23:30",
-					  "inicioQuinta": "18:00",
-					  "fimQuinta": "23:30",
-					  "inicioSexta": "18:00",
-					  "fimSexta": "23:30",
-					  "inicioSabado": "18:00",
-					  "fimSabado": "23:30",
-					  "inicioDomingo": "18:00",
-					  "fimDomingo": "23:30"
-					}
-				  },
-				 },
-				 {
-				  "empresa": {
-					"id": "pizzaria-peperoni",
-					"link": "https://gist.githubusercontent.com/gustavoamorimqueiroz1/ae96b99917a000a43660401119b89efb/raw/produtosPizzaria_.txt",
-					"nome": "Pizzaria Peperoni",
-					"descricao": "Pizzas e massas",
-					"ativa": true,
-					"telefone": "+55 (11) 4003-1278",
-					"taxaentrega": 7.00,
-					"tempoentrega": "20 a 30 min.",
-					"minimo": 30.00,
-					"endereco": {
-					  "logradouro": "Avenida Paulista",
-					  "numero": "1000",
-					  "complemento": "Edifício Corporate, Sala 403",
-					  "bairro": "Boa Vista",
-					  "cidade": "São Paulo",
-					  "estado": "SP",
-					  "cep": "01310-120",
-					  "pais": "Brasil"
-					},
-					"atendimento": {
-					  "inicioSegunda": "18:00",
-					  "fimSegunda": "23:30",
-					  "inicioTerca": "18:00",
-					  "fimTerca": "18:00",
-					  "inicioQuarta": "18:00",
-					  "fimQuarta": "23:30",
-					  "inicioQuinta": "18:00",
-					  "fimQuinta": "23:30",
-					  "inicioSexta": "18:00",
-					  "fimSexta": "23:30",
-					  "inicioSabado": "18:00",
-					  "fimSabado": "23:30",
-					  "inicioDomingo": "18:00",
-					  "fimDomingo": "23:30"
-					}
-				  },
-				 }
-				]`;
-		}
-		
+                      "logradouro": "Avenida Paulista",
+                      "numero": "1000",
+                      "complemento": "Edifício Corporate, Sala 402",
+                      "bairro": "Bela Vista",
+                      "cidade": "São Paulo",
+                      "estado": "SP",
+                      "cep": "01310-100",
+                      "pais": "Brasil"
+                    },
+                    "atendimento": {
+                      "inicioSegunda": "18:00",
+                      "fimSegunda": "18:00",
+                      "inicioTerca": "18:00",
+                      "fimTerca": "23:30",
+                      "inicioQuarta": "18:00",
+                      "fimQuarta": "23:30",
+                      "inicioQuinta": "18:00",
+                      "fimQuinta": "23:30",
+                      "inicioSexta": "18:00",
+                      "fimSexta": "23:30",
+                      "inicioSabado": "18:00",
+                      "fimSabado": "23:30",
+                      "inicioDomingo": "18:00",
+                      "fimDomingo": "23:30"
+                    }
+                  }
+                 },
+                 {
+                  "empresa": {
+                    "id": "pizzaria-peperoni",
+                    "link": "https://gist.githubusercontent.com/gustavoamorimqueiroz1/ae96b99917a000a43660401119b89efb/raw/produtosPizzaria_.txt",
+                    "nome": "Pizzaria Peperoni",
+                    "descricao": "Pizzas e massas",
+                    "ativa": true,
+                    "telefone": "+55 (11) 4003-1278",
+                    "taxaentrega": 7.00,
+                    "tempoentrega": "20 a 30 min.",
+                    "minimo": 30.00,
+                    "endereco": {
+                      "logradouro": "Avenida Paulista",
+                      "numero": "1000",
+                      "complemento": "Edifício Corporate, Sala 403",
+                      "bairro": "Boa Vista",
+                      "cidade": "São Paulo",
+                      "estado": "SP",
+                      "cep": "01310-120",
+                      "pais": "Brasil"
+                    },
+                    "atendimento": {
+                      "inicioSegunda": "18:00",
+                      "fimSegunda": "23:30",
+                      "inicioTerca": "18:00",
+                      "fimTerca": "18:00",
+                      "inicioQuarta": "18:00",
+                      "fimQuarta": "23:30",
+                      "inicioQuinta": "18:00",
+                      "fimQuinta": "23:30",
+                      "inicioSexta": "18:00",
+                      "fimSexta": "23:30",
+                      "inicioSabado": "18:00",
+                      "fimSabado": "23:30",
+                      "inicioDomingo": "18:00",
+                      "fimDomingo": "23:30"
+                    }
+                  }
+                 }
+                ]`;
+        }
+        
 
-		function retornaProdutos(empresaId){
+        function retornaProdutos(empresaId){
             if(empresaId == "lanches-avenida")
             {  
-			 return `[{
-			 "categoria":[
-			  { "tipocategoria": "hamburguer"},
-			  { "tipocategoria": "pizza"},
-			  { "tipocategoria": "sobremesa"},
-			  { "tipocategoria": "acompanhamento"},
-			  { "tipocategoria": "bebida"},
-			  { "tipocategoria": "mais"},
-			  { "tipocategoria": "prato"},
-			  { "tipocategoria": "+mais"},
-			 ],
-			 "produtos": [
-				{
-				  "nome": "Hamburguer",
-				  "descricao": "Pão, bife, salada",
-				  "categoria": "hamburguer",
-				  "preco_custo": 15.00,
-				  "composicao": [
-					{ name: "Queijo Extra", preco: 4.00 },
-					{ name: "Batata Frita Peq.", preco: 7.00 },
-					{ name: "Bacon Crocante", preco: 5.00 }
-				  ],
-				  "ativo": "s",
-				},
-				{
-				  "nome": "X-Burguer",
-				  "descricao": "Pão, bife, queijo, salada",
-				  "categoria": "hamburguer",
-				  "preco_custo": 17.00,
-				  "ativo": "s",
-				  "composicao": [
-					{ name: "Queijo Extra", preco: 4.00 },
-					{ name: "Batata Frita Peq.", preco: 7.00 },
-					{ name: "Bacon Crocante", preco: 5.00 }
-				  ],
-				},
-				{
-				  "nome": "X-Bacon burguer",
-				  "descricao": "Pão, bife, queijo, bacon, salada",
-				  "categoria": "hamburguer",
-				  "preco_custo": 17.00,
-				  "ativo": "n",
-				},  
-			   {
-				  "nome": "Coca-Cola lata",
-				  "descricao": "300ml",
-				  "categoria": "bebida",
-				  "preco_custo": 7.00,
-				  "ativo": "s",
-				}, 
-				{
-				  "nome": "Guaraná lata",
-				  "descricao": "300ml",
-				  "categoria": "bebida",
-				  "preco_custo": 7.00,
-				  "ativo": "s",
-				},
-				{
-				  "nome": "Sprite",
-				  "descricao": "300ml",
-				  "categoria": "bebida",
-				  "preco_custo": 7.00,
-				  "ativo": "s",
-				}, 
-			  ]
-			}]`;
+             return `[{
+             "categoria":[
+              { "tipocategoria": "hamburguer"},
+              { "tipocategoria": "pizza"},
+              { "tipocategoria": "sobremesa"},
+              { "tipocategoria": "acompanhamento"},
+              { "tipocategoria": "bebida"},
+              { "tipocategoria": "mais"},
+              { "tipocategoria": "prato"},
+              { "tipocategoria": "+mais"}
+             ],
+             "produtos": [
+                {
+                  "nome": "Hamburguer",
+                  "descricao": "Pão, bife, salada",
+                  "categoria": "hamburguer",
+                  "preco_custo": 15.00,
+                  "composicao": [
+                    { name: "Queijo Extra", preco: 4.00 },
+                    { name: "Batata Frita Peq.", preco: 7.00 },
+                    { name: "Bacon Crocante", preco: 5.00 }
+                  ],
+                  "ativo": "s"
+                },
+                {
+                  "nome": "X-Burguer",
+                  "descricao": "Pão, bife, queijo, salada",
+                  "categoria": "hamburguer",
+                  "preco_custo": 17.00,
+                  "ativo": "s",
+                  "composicao": [
+                    { name: "Queijo Extra", preco: 4.00 },
+                    { name: "Batata Frita Peq.", preco: 7.00 },
+                    { name: "Bacon Crocante", preco: 5.00 }
+                  ]
+                },
+                {
+                  "nome": "X-Bacon burguer",
+                  "descricao": "Pão, bife, queijo, bacon, salada",
+                  "categoria": "hamburguer",
+                  "preco_custo": 17.00,
+                  "ativo": "n"
+                },  
+               {
+                  "nome": "Coca-Cola lata",
+                  "descricao": "300ml",
+                  "categoria": "bebida",
+                  "preco_custo": 7.00,
+                  "ativo": "s"
+                }, 
+                {
+                  "nome": "Guaraná lata",
+                  "descricao": "300ml",
+                  "categoria": "bebida",
+                  "preco_custo": 7.00,
+                  "ativo": "s"
+                },
+                {
+                  "nome": "Sprite",
+                  "descricao": "300ml",
+                  "categoria": "bebida",
+                  "preco_custo": 7.00,
+                  "ativo": "s"
+                } 
+              ]
+            }]`;
             }
             else if(empresaId == "pizzaria-peperoni")
             {
@@ -1692,7 +1718,7 @@
                  ]
             }]`;
          }
-		}
+        }
     </script>
 </body>
 </html>
