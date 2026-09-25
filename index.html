@@ -890,17 +890,17 @@
         }
 
         async function fetchCompanies() {
-            try {
-                const response = await fetch(EMPRESAS_URL);
-                const rawText = await response.text();
-                const data = safeJSONParse(rawText);
+            // try {
+            //     const response = await fetch(EMPRESAS_URL);
+            //     const rawText = await response.text();
+            //     const data = safeJSONParse(rawText);
                 
-                // Map and sanitize active companies
-                state.empresas = data
-                    .map(item => item.empresa)
-                    .filter(emp => emp && emp.ativa !== false);
+            //     // Map and sanitize active companies
+            //     state.empresas = data
+            //         .map(item => item.empresa)
+            //         .filter(emp => emp && emp.ativa !== false);
 
-            } catch (err) {
+            // } catch (err) {
             try {
                 const rawText = retornaEmpresas();
                 const data = safeJSONParse(rawText);
@@ -912,7 +912,7 @@
                 console.error("Erro ao carregar empresas:", err);
                 showToast("Erro ao carregar lista de estabelecimentos.");
             }
-          }
+        //   }
         }
 
         async function handleRouting() {
