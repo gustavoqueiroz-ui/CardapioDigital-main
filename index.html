@@ -621,6 +621,7 @@
             box-shadow: var(--shadow-lg);
             z-index: 200;
             transition: transform 0.3s ease;
+            text-align: center;
         }
 
         .toast.show {
@@ -854,18 +855,18 @@
             const toast = document.getElementById('toast-message');
             toast.textContent = message;
             toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 2800);
+            setTimeout(() => toast.classList.remove('show'), 3000);
         }
 
-        // Helper: Safe JSON Parser (Fixes broken JSON syntax gracefully)
+        // Helper: Safe JSON Parser
         function safeJSONParse(rawText) {
             try {
                 return JSON.parse(rawText);
             } catch (e) {
                 let cleaned = rawText
-                    .replace(/([{,]\s*)([a-zA-Z0-9_]+)\s*:/g, '$1"$2":') // Add quotes to unquoted keys
-                    .replace(/,\s*([\]}])/g, '$1') // Remove trailing commas
-                    .replace(/'/g, '"'); // Replace single quotes
+                    .replace(/([{,]\s*)([a-zA-Z0-9_]+)\s*:/g, '$1"$2":')
+                    .replace(/,\s*([\]}])/g, '$1')
+                    .replace(/'/g, '"');
                 return JSON.parse(cleaned);
             }
         }
@@ -878,7 +879,6 @@
             handleRouting();
         }
 
-        // Extract query param or hash for company ID
         function getCompanyIdFromURL() {
             const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.get('empresa')) return urlParams.get('empresa');
@@ -927,7 +927,6 @@
                 }
             }
 
-            // Default route: Display Company List (Hub)
             state.currentCompany = null;
             renderCompaniesHub();
         }
@@ -990,7 +989,6 @@
                 </div>
             `;
 
-            // Formatação do Endereço da Empresa
             let enderecoStr = '';
             if (company.endereco) {
                 const e = company.endereco;
@@ -999,7 +997,6 @@
                 enderecoStr = 'Endereço não disponível';
             }
 
-            // Update Header for Company
             document.getElementById('header-title').innerHTML = company.nome;
             document.getElementById('company-info-container').innerHTML = `
                 <div style="margin-top: 5px; line-height: 1.4;">
@@ -1038,7 +1035,7 @@
                 state.products = (data[0].produtos || []).filter(p => p.ativo === "s" || p.ativo === "S");
                 state.categories = data[0].categoria || [];
                 state.selectedCategory = 'todas';
-                state.cart = []; // Reset cart for new company
+                state.cart = [];
 
                 renderCompanyProductsView();
                 updateCartBar();
@@ -1101,7 +1098,6 @@
 
             productsHtml += `</div>`;
 
-            // Adiciona footer powered by COMPREAQUIDEVS
             const footerHtml = `
                 <footer class="footer-powered">
                     powered by <strong>COMPREAQUIDEVS</strong>
@@ -1125,7 +1121,55 @@
             renderCompanyProductsView();
         }
 
+        // Função auxiliar que verifica de forma booleana se a loja está aberta
+        function isStoreOpen() {
+            if (!state.currentCompany || !state.currentCompany.atendimento) {
+                return false;
+            }
+
+            const atendimento = state.currentCompany.atendimento;
+            const now = new Date();
+            const dayOfWeek = now.getDay();
+
+            const dayKeys = [
+                { inicio: 'inicioDomingo', fim: 'fimDomingo' },
+                { inicio: 'inicioSegunda', fim: 'fimSegunda' },
+                { inicio: 'inicioTerca', fim: 'fimTerca' },
+                { inicio: 'inicioQuarta', fim: 'fimQuarta' },
+                { inicio: 'inicioQuinta', fim: 'fimQuinta' },
+                { inicio: 'inicioSexta', fim: 'fimSexta' },
+                { inicio: 'inicioSabado', fim: 'fimSabado' }
+            ];
+
+            const todayKey = dayKeys[dayOfWeek];
+            const inicioStr = atendimento[todayKey.inicio];
+            const fimStr = atendimento[todayKey.fim];
+
+            if (!inicioStr || !fimStr) return false;
+
+            const parseMinutes = (timeStr) => {
+                const [h, m] = timeStr.split(':').map(Number);
+                return (h * 60) + m;
+            };
+
+            const inicioMin = parseMinutes(inicioStr);
+            let fimMin = parseMinutes(fimStr);
+            const atualMin = (now.getHours() * 60) + now.getMinutes();
+
+            if (fimMin <= inicioMin) {
+                if (fimMin === inicioMin) return false;
+                return atualMin >= inicioMin || atualMin < fimMin;
+            }
+            return atualMin >= inicioMin && atualMin < fimMin;
+        }
+
         function openProductModal(productIndex) {
+            // Verifica se a empresa está aberta antes de permitir a adição do produto
+            if (!isStoreOpen()) {
+                showToast("🔴 Desculpe, o estabelecimento está fechado no momento e não aceita pedidos.");
+                return;
+            }
+
             const filtered = state.selectedCategory === 'todas'
                 ? state.products
                 : state.products.filter(p => p.categoria.toLowerCase() === state.selectedCategory);
@@ -1341,17 +1385,20 @@
         function handleCheckout(event) {
             event.preventDefault();
 
+            if (!isStoreOpen()) {
+                showToast("🔴 O estabelecimento está fechado no momento.");
+                return;
+            }
+
             if (state.cart.length === 0) {
                 showToast("Adicione produtos ao carrinho antes de finalizar.");
                 return;
             }
 
-            // Subtotal e Valor Mínimo da Empresa
             const subtotal = state.cart.reduce((sum, item) => sum + (item.preco * item.quantidade), 0);
             const valorMinimo = state.currentCompany ? (parseFloat(state.currentCompany.minimo) || 0) : 0;
 
 
-            // Input elements
             const nomeInput = document.getElementById('c-nome');
             const telInput = document.getElementById('c-telefone');
             const endInput = document.getElementById('c-endereco');
@@ -1360,7 +1407,6 @@
             const obsInput = document.getElementById('c-obs');
             const tipoEntrega = document.querySelector('input[name="tipoEntrega"]:checked').value;
 
-            // Validations
             let isValid = true;
 
             if (nomeInput.value.trim().length < 3 || nomeInput.value.trim().length > 50) {
@@ -1440,7 +1486,6 @@
 
             window.open(whatsappUrl, '_blank');
 
-            // Pergunta se o pedido foi enviado com sucesso
             setTimeout(() => {
                 const confirmRes = confirm("Seu pedido foi finalizado e enviado com sucesso no WhatsApp?");
                 if (confirmRes) {
@@ -1452,59 +1497,9 @@
         
         function checkStoreStatus() {
             const statusElement = document.getElementById('store-status');
-            if (!statusElement || !state.currentCompany || !state.currentCompany.atendimento) {
-                return;
-            }
+            if (!statusElement) return;
 
-            const atendimento = state.currentCompany.atendimento;
-            const now = new Date();
-            const dayOfWeek = now.getDay(); // 0 = Domingo, 1 = Segunda, 2 = Terça, etc.
-
-            // Mapeamento dos dias para as chaves no objeto de atendimento
-            const dayKeys = [
-                { inicio: 'inicioDomingo', fim: 'fimDomingo' },
-                { inicio: 'inicioSegunda', fim: 'fimSegunda' },
-                { inicio: 'inicioTerca', fim: 'fimTerca' },
-                { inicio: 'inicioQuarta', fim: 'fimQuarta' },
-                { inicio: 'inicioQuinta', fim: 'fimQuinta' },
-                { inicio: 'inicioSexta', fim: 'fimSexta' },
-                { inicio: 'inicioSabado', fim: 'fimSabado' }
-            ];
-
-            const todayKey = dayKeys[dayOfWeek];
-            const inicioStr = atendimento[todayKey.inicio];
-            const fimStr = atendimento[todayKey.fim];
-
-            if (!inicioStr || !fimStr) {
-                statusElement.innerHTML = "🔴 Fechado no momento";
-                statusElement.style.color = "#f44336";
-                return;
-            }
-
-            // Converter horários "HH:MM" em minutos desde o início do dia
-            const parseMinutes = (timeStr) => {
-                const [h, m] = timeStr.split(':').map(Number);
-                return (h * 60) + m;
-            };
-
-            const inicioMin = parseMinutes(inicioStr);
-            let fimMin = parseMinutes(fimStr);
-            const atualMin = (now.getHours() * 60) + now.getMinutes();
-
-            // Trata turnos que viram a madrugada (ex: 18:00 até 02:00)
-            let isOpen = false;
-            if (fimMin <= inicioMin) {
-                // Caso fim == inicio (ex: 18:00 às 18:00 indica dia fechado)
-                if (fimMin === inicioMin) {
-                    isOpen = false;
-                } else {
-                    isOpen = atualMin >= inicioMin || atualMin < fimMin;
-                }
-            } else {
-                isOpen = atualMin >= inicioMin && atualMin < fimMin;
-            }
-
-            if (isOpen) {
+            if (isStoreOpen()) {
                 statusElement.innerHTML = "🟢 Aberto Agora";
                 statusElement.style.color = "#4caf50";
             } else {
