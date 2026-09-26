@@ -374,31 +374,27 @@
         }
 
         .modal-content {
-    background: #ffffff;
-    width: 100%;
-    max-width: 600px;
-    border-radius: 20px 20px 0 0;
-    max-height: 90vh;
-    overflow-y: auto; /* Permite scroll no modal completo */
-    padding: 20px;
-    transform: translateY(100%);
-    transition: transform 0.25s ease-in-out;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
+            background: #ffffff;
+            width: 100%;
+            max-width: 600px;
+            border-radius: 20px 20px 0 0;
+            max-height: 90vh;
+            overflow-y: auto; /* Permite scroll no modal completo */
+            padding: 20px;
+            transform: translateY(100%);
+            transition: transform 0.25s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
 
-/* Corrigido: flex-shrink e min-height para os itens do carrinho não colapsarem */
-.cart-items-container {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    min-height: 80px; /* Garante visibilidade mínima */
-    max-height: 250px;
-    overflow-y: auto;
-    padding-right: 4px;
-    flex-shrink: 0; /* IMPEDE que o formulário "esmague" a lista de produtos */
-}
+        .cart-items-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            /* Removido max-height e overflow-y para não gerar rolagem própria */
+            flex-shrink: 0;
+        }
 
         .modal-overlay.active .modal-content {
             transform: translateY(0);
