@@ -374,19 +374,31 @@
         }
 
         .modal-content {
-            background: #ffffff;
-            width: 100%;
-            max-width: 600px;
-            border-radius: 20px 20px 0 0;
-            max-height: 90vh;
-            overflow-y: auto;
-            padding: 20px;
-            transform: translateY(100%);
-            transition: transform 0.25s ease-in-out;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
+    background: #ffffff;
+    width: 100%;
+    max-width: 600px;
+    border-radius: 20px 20px 0 0;
+    max-height: 90vh;
+    overflow-y: auto; /* Permite scroll no modal completo */
+    padding: 20px;
+    transform: translateY(100%);
+    transition: transform 0.25s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Corrigido: flex-shrink e min-height para os itens do carrinho não colapsarem */
+.cart-items-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-height: 80px; /* Garante visibilidade mínima */
+    max-height: 250px;
+    overflow-y: auto;
+    padding-right: 4px;
+    flex-shrink: 0; /* IMPEDE que o formulário "esmague" a lista de produtos */
+}
 
         .modal-overlay.active .modal-content {
             transform: translateY(0);
@@ -474,14 +486,14 @@
         }
 
         /* Cart Items List */
-        .cart-items-container {
+        /* .cart-items-container {
             display: flex;
             flex-direction: column;
             gap: 12px;
             max-height: 200px;
             overflow-y: auto;
             padding-right: 4px;
-        }
+        } */
 
         .cart-item {
             display: flex;
@@ -1286,7 +1298,8 @@
 
         function renderCartModalItems() {
             const container = document.getElementById('cart-items-list');
-            if (state.cart.length === 0) {
+            //if (state.cart.length === 0) {
+            if (!state.cart || state.cart.length === 0) {
                 container.innerHTML = `<p style="font-size:0.85rem; color:#6b7280; text-align:center;">Seu carrinho está vazio.</p>`;
                 return;
             }
@@ -1294,7 +1307,10 @@
             let html = '';
             state.cart.forEach((item, index) => {
                 const itemTotal = item.preco * item.quantidade;
-                const optsText = item.opcoes.length > 0 ? item.opcoes.join(', ') : 'Padrão';
+                //const optsText = item.opcoes.length > 0 ? item.opcoes.join(', ') : 'Padrão';
+                const optsText = (item.opcoes && Array.isArray(item.opcoes) && item.opcoes.length > 0) 
+                    ? item.opcoes.join(', ') 
+                    : 'Padrão';
 
                 html += `
                     <div class="cart-item">
